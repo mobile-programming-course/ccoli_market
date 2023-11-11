@@ -1,5 +1,6 @@
 package com.example.ccoli_market
 
+<<<<<<< Updated upstream
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -19,6 +20,14 @@ import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccoli_market.databinding.ActivityMainBinding
+=======
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+>>>>>>> Stashed changes
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+<<<<<<< Updated upstream
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -184,5 +194,14 @@ class MainActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             .show()
+=======
+        setContentView(R.layout.activity_main)
+        if (Firebase.auth.currentUser == null) {
+            startActivity(
+                Intent(this, LoginActivity::class.java)
+            )
+            finish()
+        }
+>>>>>>> Stashed changes
     }
 }
