@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "515168618035",
+    "project_id": "ccoli-market",
+    "storage_bucket": "ccoli-market.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515168618035:android:3965d831328085deb50546",
+        "android_client_info": {
+          "package_name": "com.example.ccoli_market"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlqu9ZweJ8-4CwPvfRwSZUTKz8-K0oSq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
