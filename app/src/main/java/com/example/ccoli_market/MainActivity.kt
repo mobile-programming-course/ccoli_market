@@ -1,6 +1,5 @@
 package com.example.ccoli_market
 
-<<<<<<< Updated upstream
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -14,20 +13,15 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccoli_market.databinding.ActivityMainBinding
-=======
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.widget.Button
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
->>>>>>> Stashed changes
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,11 +30,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-<<<<<<< Updated upstream
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        findViewById<Button>(R.id.button2).setOnClickListener {
+            startActivity(
+                Intent(this, LoginActivity::class.java)
+            )
+            finish()
+        }
+        if (Firebase.auth.currentUser == null) {
+            startActivity(
+                Intent(this, LoginActivity::class.java)
+            )
+            finish()
+        }
         val dataList = mutableListOf<MyItem>()
         dataList.add(MyItem(R.drawable.sample1, "산지 한달된 선풍기 팝니다", "서울 서대문구 창천동", "1,000원", 13, 25, "대현동", "이사가서 필요가 없어졌어요 급하게 내놓습니다", false))
         dataList.add(MyItem(R.drawable.sample2, "김치냉장고", "인천 계양구 귤현동", "20,000원", 8, 28, "안마담", "이사로인해 내놔요", false))
@@ -194,14 +197,5 @@ class MainActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             .show()
-=======
-        setContentView(R.layout.activity_main)
-        if (Firebase.auth.currentUser == null) {
-            startActivity(
-                Intent(this, LoginActivity::class.java)
-            )
-            finish()
-        }
->>>>>>> Stashed changes
     }
 }
