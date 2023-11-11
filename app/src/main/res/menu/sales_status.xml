@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinnerArray">
+        <item>판매중</item>
+        <item>판매완료</item>
+    </string-array>
+</resources>
