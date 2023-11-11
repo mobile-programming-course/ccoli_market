@@ -18,8 +18,11 @@ class LoginActivity : AppCompatActivity() {
             val password = findViewById<EditText>(R.id.sign_in_password)?.text.toString()
             doLogin(userEmail, password)
         }
+        findViewById<Button>(R.id.sign_up_btn)?.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+        }
     }
-
     private fun doLogin(userEmail: String, password: String) {
         Firebase.auth.signInWithEmailAndPassword(userEmail, password)
             .addOnCompleteListener(this) { // it: Task<AuthResult!>
