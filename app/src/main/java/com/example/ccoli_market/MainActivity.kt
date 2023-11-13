@@ -32,7 +32,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        findViewById<Button>(R.id.button2).setOnClickListener {
+
+        findViewById<Button>(R.id.logout).setOnClickListener {
+            Firebase.auth.signOut()
             startActivity(
                 Intent(this, LoginActivity::class.java)
             )
