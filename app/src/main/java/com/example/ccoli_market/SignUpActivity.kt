@@ -1,6 +1,7 @@
 package com.example.ccoli_market
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
@@ -37,8 +38,8 @@ class SignUpActivity : AppCompatActivity() {
             if (isChecked) {
                 signUp()
                 showToast(this, "가입에 성공하였습니다.")
-                // Use appropriate navigation logic for your activity
-                // e.g., finish() to go back to the previous activity
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
             } else {
                 showToast(this, "정보제공 동의해주세요.")
             }
