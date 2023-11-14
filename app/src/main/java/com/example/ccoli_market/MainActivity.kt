@@ -32,7 +32,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        findViewById<Button>(R.id.button2).setOnClickListener {
+
+        findViewById<Button>(R.id.logout).setOnClickListener {
+            Firebase.auth.signOut()
             startActivity(
                 Intent(this, LoginActivity::class.java)
             )
@@ -80,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 롱클릭 삭제 다이얼로그
+        // 롱클릭 삭제 -> 목록 리스트에서 삭제하는 부분
         adapter.longItemClick = object : MyAdapter.LongItemClick {
             override fun onLongClick(view: View, position: Int) {
                 val itemRomove = dataList[position]
@@ -102,25 +104,21 @@ class MainActivity : AppCompatActivity() {
         // floating button
         val fadeIn = AlphaAnimation(0f, 1f).apply { duration = 700 }
         val fadeOut = AlphaAnimation(1f, 0f).apply { duration = 700 }
-        var isTop = true
 
-        binding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!binding.recyclerView.canScrollVertically(-1)
-                    && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    binding.floatingButton.startAnimation(fadeOut)
-                    binding.floatingButton.visibility = View.INVISIBLE
-                    isTop = true
-                } else {
-                    if(isTop) {
-                        binding.floatingButton.visibility = View.VISIBLE
-                        binding.floatingButton.startAnimation(fadeIn)
-                        isTop = false
-                    }
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                // 항상 FAB를 표시
+                if (binding.floatingButton.visibility == View.INVISIBLE) {
+                    binding.floatingButton.visibility = View.VISIBLE
+                    binding.floatingButton.startAnimation(fadeIn)
                 }
             }
         })
+
+
+
         binding.floatingButton.setOnClickListener {
             binding.recyclerView.smoothScrollToPosition(0)
         }

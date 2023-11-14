@@ -27,12 +27,13 @@ class LoginActivity : AppCompatActivity() {
         Firebase.auth.signInWithEmailAndPassword(userEmail, password)
             .addOnCompleteListener(this) { // it: Task<AuthResult!>
                 if (it.isSuccessful){
+                    Toast.makeText(this, userEmail +"님 환영합니다.", Toast.LENGTH_SHORT).show()
                     startActivity(
                         Intent(this, MainActivity::class.java)
                     )
                     finish()
                 } else {
-                    Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "로그인에 실패하셨습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
     }
