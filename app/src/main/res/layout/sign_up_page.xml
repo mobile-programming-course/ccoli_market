@@ -18,20 +18,6 @@
         app:layout_constraintVertical_bias="0.14"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/sign_up_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="460dp"
-        android:ems="10"
-        android:hint="이메일"
-        android:inputType="textEmailAddress"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <RadioGroup
         android:id="@+id/sign_up_page_radioGroup"
         android:layout_width="150dp"
@@ -39,9 +25,8 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.383"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_password_check"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_password"
         app:layout_constraintVertical_bias="0.0">
 
         <RadioButton
@@ -60,19 +45,6 @@
     </RadioGroup>
 
     <EditText
-        android:id="@+id/sign_up_password_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="비밀번호 확인"
-        android:inputType="textPassword"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_password" />
-
-    <EditText
         android:id="@+id/sign_up_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,13 +60,27 @@
         app:layout_constraintTop_toBottomOf="@+id/sign_up_email"
         app:layout_constraintVertical_bias="0.0" />
 
+    <EditText
+        android:id="@+id/sign_up_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="388dp"
+        android:ems="10"
+        android:hint="이메일"
+        android:inputType="textEmailAddress"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <CheckBox
         android:id="@+id/sign_up_checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="정보동의"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.305"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_page_radioGroup" />
 
@@ -111,5 +97,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.787" />
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="236dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="192dp"
+        android:ems="10"
+        android:hint="성함"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="236dp"
+        android:layout_height="49dp"
+        android:ems="10"
+        android:hint="생년월일"
+        android:inputType="date"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/sign_up_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
