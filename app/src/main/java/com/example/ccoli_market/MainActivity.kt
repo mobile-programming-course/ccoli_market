@@ -14,6 +14,7 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
@@ -122,9 +123,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Notification
-        binding.notiButton.setOnClickListener {
-            showNotification()
-        }
+        //binding.notiButton.setOnClickListener {
+        //    showNotification()
+        //}
 
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
@@ -142,6 +143,15 @@ class MainActivity : AppCompatActivity() {
                 adapter.notifyItemChanged(likePosition)
             }
         }
+    }
+
+    fun openChatListFragment(view: View) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        val fragmentChatList = ChatListFragment()
+
+        fragmentTransaction.replace(R.id.chatListRecyclerView, fragmentChatList) // R.id.fragmentContainer는 Fragment를 표시할 레이아웃의 ID로 적절하게 변경
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
     private fun showNotification() {
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
