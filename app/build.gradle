@@ -51,10 +51,7 @@ dependencies {
 
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation 'com.google.firebase:firebase-auth-ktx'
-<<<<<<< Updated upstream
-
     implementation 'com.google.firebase:firebase-database-ktx'
-=======
     implementation 'com.google.firebase:firebase-storage'
->>>>>>> Stashed changes
+
 }
