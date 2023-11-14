@@ -3,8 +3,10 @@ package com.example.ccoli_market
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ccoli_market.databinding.ActivityDetailBinding
+import com.example.ccoli_market.databinding.ChatLayoutBinding
 import com.google.android.material.snackbar.Snackbar
 
 class DetailActivity : AppCompatActivity() {
@@ -41,6 +43,10 @@ class DetailActivity : AppCompatActivity() {
                     isLiked = false
                 }
             }
+        }
+        findViewById<Button>(R.id.button).setOnClickListener {
+            val intent = Intent(this, ChatActivity::class.java)
+            startActivity(intent)
         }
     }
     private fun exit() {

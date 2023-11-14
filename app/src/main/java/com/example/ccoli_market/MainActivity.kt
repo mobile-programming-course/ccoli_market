@@ -117,8 +117,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-
-
         binding.floatingButton.setOnClickListener {
             binding.recyclerView.smoothScrollToPosition(0)
         }
