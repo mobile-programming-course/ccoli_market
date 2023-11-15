@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         val homeFragment = ProductListFragment()
         val chatListFragment = ChatListFragment()
         val myPageFragment = MyPageFragment()
-
+        val addItemFragment=AddItemFragment()
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         // fragment 초기값
@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         // setOnNavigationItemSelectedListener는 네비게이션바의 탭들이 선택되었을 때 호출되어 선택된 탭의 id가 내려온다.
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.addItem->replaceFragment(addItemFragment)
                 R.id.home -> replaceFragment(homeFragment)
                 R.id.chatList -> replaceFragment(chatListFragment)
                 R.id.myPage -> replaceFragment(myPageFragment)

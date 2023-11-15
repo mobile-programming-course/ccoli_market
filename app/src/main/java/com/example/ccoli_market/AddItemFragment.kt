@@ -5,20 +5,19 @@ import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
-class AddItemActivity :AppCompatActivity(){
+class AddItemFragment :Fragment(R.layout.add_item){
     private lateinit var imageView:ImageView
     private val root:DatabaseReference=FirebaseDatabase.getInstance().getReference("Image")
     private val reference:StorageReference=FirebaseStorage.getInstance().getReference()
@@ -32,11 +31,10 @@ class AddItemActivity :AppCompatActivity(){
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.add_item)
-        val uploadbtn=findViewById<Button>(R.id.uploadbtn)
-        imageView=findViewById(R.id.imageView)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val uploadbtn=view.findViewById<Button>(R.id.uploadbtn)
+        imageView=view.findViewById(R.id.imageView)
         imageView.setOnClickListener {
             val galleryIntent= Intent().apply{
                 action=Intent.ACTION_GET_CONTENT
@@ -48,7 +46,7 @@ class AddItemActivity :AppCompatActivity(){
             imageUri?.let { uri->
                 uploadToFirebase(uri)
             }?:run{
-                Toast.makeText(this@AddItemActivity, "사진을 선택해주세요.", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@AddItemActivity, "사진을 선택해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -66,7 +64,7 @@ class AddItemActivity :AppCompatActivity(){
                     // 데이터 넣기
                     root.child(modelId).setValue(model)
 
-                    Toast.makeText(this@AddItemActivity, "업로드 성공", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@AddItemActivity, "업로드 성공", Toast.LENGTH_SHORT).show()
 
                     imageView.setImageResource(R.drawable.ic_camera)
                 }
@@ -75,7 +73,7 @@ class AddItemActivity :AppCompatActivity(){
     }
     // 파일 타입 가져오기
     private fun getFileExtension(uri: Uri): String? {
-        val cr: ContentResolver = contentResolver
+        val cr: ContentResolver = activity?.contentResolver ?: return null
         val mime: MimeTypeMap = MimeTypeMap.getSingleton()
         return mime.getExtensionFromMimeType(cr.getType(uri))
 
