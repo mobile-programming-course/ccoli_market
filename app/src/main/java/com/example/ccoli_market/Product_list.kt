@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccoli_market.databinding.ActivityMainBinding
 import com.example.ccoli_market.databinding.ProductListBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -34,7 +33,6 @@ class ProductListFragment : Fragment(R.layout.product_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding = ProductListBinding.bind(view)
 
         val dataList = mutableListOf<MyItem>()
