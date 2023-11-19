@@ -1,81 +1,153 @@
 package com.example.ccoli_market
 
-import android.app.Activity
-import android.content.ContentResolver
+import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.webkit.MimeTypeMap
-import android.widget.Button
-import android.widget.ImageView
-import androidx.activity.result.ActivityResult
+import android.view.ViewGroup
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.ccoli_market.DBKey.Companion.DB_ARTICLES
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 
-class AddItemFragment :Fragment(R.layout.add_item){
-    private lateinit var imageView:ImageView
-    private val root:DatabaseReference=FirebaseDatabase.getInstance().getReference("Image")
-    private val reference:StorageReference=FirebaseStorage.getInstance().getReference()
-    private var imageUri: Uri?=null
-    private val activityResult=registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ){result:ActivityResult->
-        if(result.resultCode== Activity.RESULT_OK&&result.data!=null){
-            imageUri=result.data!!.data
-            imageView.setImageURI(imageUri)
-        }
+
+class AddItemFragment() : Fragment() {
+    private val GALLERY_CODE=10;
+    private var selectedUri: Uri? = null
+    private val auth: FirebaseAuth by lazy {
+        Firebase.auth
     }
-
+    private val storage: FirebaseStorage by lazy {
+        Firebase.storage
+    }
+    private val articleDB: DatabaseReference by lazy {
+        Firebase.database.reference.child(DB_ARTICLES)
+    }
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data: Intent? = result.data
+                when(result.resultCode){
+                    GALLERY_CODE-> {
+                        data?.data?.let { uri ->
+                            view?.findViewById<ImageView>(R.id.imageView)?.setImageURI(uri)
+                            selectedUri = uri
+                        }
+                    }
+                }
+            } else {
+                Toast.makeText(requireContext(), "사진을 가져오지 못했습니다", Toast.LENGTH_SHORT).show()
+            }
+        }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.add_item, container, false)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val uploadbtn=view.findViewById<Button>(R.id.uploadbtn)
-        imageView=view.findViewById(R.id.imageView)
-        imageView.setOnClickListener {
-            val galleryIntent= Intent().apply{
-                action=Intent.ACTION_GET_CONTENT
-                type="image/"
-            }
-            activityResult.launch(galleryIntent)
+        view.findViewById<Button>(R.id.uploadbtn).setOnClickListener {
+            startContentProvider()
+//            when {
+//                ContextCompat.checkSelfPermission(
+//                    requireContext(),
+//                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+//                ) == PackageManager.PERMISSION_GRANTED -> {
+//                    startContentProvider()
+//                }
+//                shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE) -> {
+//                    showPermissionContextPopup()
+//                }
+//                else -> {
+//                    requestPermissions(
+//                        arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+//                        1010
+//                    )
+//                }
         }
-        uploadbtn.setOnClickListener {
-            imageUri?.let { uri->
-                uploadToFirebase(uri)
-            }?:run{
-//                Toast.makeText(this@AddItemActivity, "사진을 선택해주세요.", Toast.LENGTH_SHORT).show()
+        view.findViewById<Button>(R.id.addItembtn).setOnClickListener {
+            val title =
+                view.findViewById<EditText>(R.id.et_title).text.toString()
+            val price =
+                view.findViewById<EditText>(R.id.et_price).text.toString()
+            val sellerId = auth.currentUser?.uid.orEmpty()
+
+            if (selectedUri != null) {
+                val photoUri = selectedUri ?: return@setOnClickListener
+                uploadPhoto(
+                    photoUri,
+                    successHandler = { uri ->
+                        uploadArticle(sellerId, title, price, uri)
+                    },
+                    errorHandler = {
+                        Toast.makeText(
+                            requireContext(),
+                            "사진 업로드에 실패했습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+//                        hideProgress()
+                    }
+                )
+            } else {
+                uploadArticle(sellerId, title, price, "")
             }
         }
     }
-    private fun uploadToFirebase(uri: Uri){
-        val fileRef: StorageReference = reference.child("${System.currentTimeMillis()}.${getFileExtension(uri)}")
-        fileRef.putFile(uri)
-            .addOnSuccessListener { taskSnapshot ->
-                fileRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                    // 이미지 모델에 담기
-                    val model = Model(downloadUri.toString())
-
-                    // 키로 아이디 생성
-                    val modelId: String = root.push().key!!
-
-                    // 데이터 넣기
-                    root.child(modelId).setValue(model)
-
-//                    Toast.makeText(this@AddItemActivity, "업로드 성공", Toast.LENGTH_SHORT).show()
-
-                    imageView.setImageResource(R.drawable.ic_camera)
+    private fun uploadPhoto(uri: Uri, successHandler: (String) -> Unit, errorHandler: () -> Unit) {
+        val fileName = "${System.currentTimeMillis()}.png"
+        storage.reference.child("Add_item").child(fileName)
+            .putFile(uri)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    storage.reference.child("Add_item").child(fileName)
+                        .downloadUrl
+                        .addOnSuccessListener { downloadUrl ->
+                            successHandler(downloadUrl.toString())
+                        }
+                        .addOnFailureListener {
+                            errorHandler()
+                        }
+                } else {
+                    errorHandler()
                 }
             }
-
     }
-    // 파일 타입 가져오기
-    private fun getFileExtension(uri: Uri): String? {
-        val cr: ContentResolver = activity?.contentResolver ?: return null
-        val mime: MimeTypeMap = MimeTypeMap.getSingleton()
-        return mime.getExtensionFromMimeType(cr.getType(uri))
-
+    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String) {
+        val model =
+            ArticleModel(sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl)
+        articleDB.push().setValue(model)
     }
+
+    private fun startContentProvider() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        getContent.launch(intent)
+    }
+
+//    private fun showPermissionContextPopup() {
+//        AlertDialog.Builder(requireContext())
+//            .setTitle("권한이 필요합니다.")
+//            .setMessage("사진을 가져오기 위해 필요합니다")
+//            .setPositiveButton("동의") { _, _ ->
+//                requestPermissions(
+//                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+//                    1010
+//                )
+//            }
+//            .create()
+//            .show()
+//    }
 }
