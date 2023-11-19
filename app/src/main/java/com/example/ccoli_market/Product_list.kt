@@ -10,21 +10,17 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.ccoli_market.databinding.ActivityMainBinding
 import com.example.ccoli_market.databinding.ProductListBinding
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 class ProductListFragment : Fragment(R.layout.product_list) {
 
@@ -34,6 +30,12 @@ class ProductListFragment : Fragment(R.layout.product_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = ProductListBinding.bind(view)
+
+        view.findViewById<Button>(R.id.logout).setOnClickListener {
+            Firebase.auth.signOut()
+            val intent = Intent(activity, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         val dataList = mutableListOf<MyItem>()
         dataList.add(MyItem(R.drawable.sample1, "산지 한달된 선풍기 팝니다", "서울 서대문구 창천동", "1,000원", 13, 25, "대현동", "이사가서 필요가 없어졌어요 급하게 내놓습니다", false))
@@ -68,7 +70,7 @@ class ProductListFragment : Fragment(R.layout.product_list) {
             override fun onLongClick(view: View, position: Int) {
                 val itemRomove = dataList[position]
                 AlertDialog.Builder(requireContext())
-                    .setIcon(R.drawable.chat)
+                    .setIcon(R.drawable.chat_icon)
                     .setTitle("삭제")
                     .setMessage("정말로 삭제하시겠습니까?")
                     .setPositiveButton("확인") { dialog, _ ->
@@ -83,7 +85,7 @@ class ProductListFragment : Fragment(R.layout.product_list) {
         }
 
         // floating button
-        val fadeIn = AlphaAnimation(0f, 1f).apply { duration = 700 }
+/*        val fadeIn = AlphaAnimation(0f, 1f).apply { duration = 700 }
         val fadeOut = AlphaAnimation(1f, 0f).apply { duration = 700 }
 
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -96,7 +98,7 @@ class ProductListFragment : Fragment(R.layout.product_list) {
                     binding.floatingButton.startAnimation(fadeIn)
                 }
             }
-        })
+        })*/
 
         binding.floatingButton.setOnClickListener {
             binding.recyclerView.smoothScrollToPosition(0)
@@ -165,7 +167,7 @@ class ProductListFragment : Fragment(R.layout.product_list) {
     // 뒤로가기 버튼 클릭 시 종료 다이얼로그
     fun onBackPressed() {
         val alertDialog = AlertDialog.Builder(requireContext())
-            .setIcon(R.drawable.chat)
+            .setIcon(R.drawable.chat_icon)
             .setTitle("종료")
             .setMessage("정말로 종료하시겠습니까?")
             .setPositiveButton("확인") { dialog, _ ->
