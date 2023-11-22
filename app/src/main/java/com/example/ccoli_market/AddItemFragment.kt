@@ -84,13 +84,14 @@ class AddItemFragment() : Fragment() {
             val price =
                 view.findViewById<EditText>(R.id.et_price).text.toString()
             val sellerId = auth.currentUser?.uid.orEmpty()
+            val content = view.findViewById<EditText>(R.id.et_content).text.toString();
 
             if (selectedUri != null) {
                 val photoUri = selectedUri ?: return@setOnClickListener
                 uploadPhoto(
                     photoUri,
                     successHandler = { uri ->
-                        uploadArticle(sellerId, title, price, uri)
+                        uploadArticle(sellerId, title, price, uri, content)
                     },
                     errorHandler = {
                         Toast.makeText(
@@ -102,7 +103,7 @@ class AddItemFragment() : Fragment() {
                     }
                 )
             } else {
-                uploadArticle(sellerId, title, price, "")
+                uploadArticle(sellerId, title, price, "", content)
             }
         }
     }
@@ -125,9 +126,9 @@ class AddItemFragment() : Fragment() {
                 }
             }
     }
-    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String) {
+    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String, content: String) {
         val model =
-            ArticleModel(sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl)
+            ArticleModel(sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl, content)
         articleDB.push().setValue(model)
     }
 
