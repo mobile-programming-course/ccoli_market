@@ -197,20 +197,20 @@
             app:layout_constraintStart_toEndOf="@+id/view" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button"
+            android:id="@+id/messagebutton"
             android:layout_width="100dp"
             android:layout_height="35dp"
             android:layout_marginRight="@dimen/layout_margin"
+            android:layout_marginBottom="@dimen/layout_margin"
             android:background="@drawable/button"
-            android:contentDescription="채팅하기"
-            android:stateListAnimator="@null"
             android:text="채팅하기"
+            android:contentDescription="채팅하기"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:stateListAnimator="@null"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

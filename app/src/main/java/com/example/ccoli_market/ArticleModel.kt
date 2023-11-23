@@ -12,7 +12,8 @@ data class ArticleModel(
     val price: String,
     val imageUrl: String,
     val content: String
-){
+)
+{
     constructor(): this("","",0,"","","")
 
     companion object {

@@ -22,7 +22,7 @@
             android:name=".DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"/>
+            android:name=".ChattingRoomActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -34,7 +34,8 @@
         </activity>
         <activity android:name=".LoginActivity"/>
         <activity android:name=".SignUpActivity"/>
-        <activity android:name=".AddItemFragment"/>
+        <activity android:name=".AddItemActivity"/>
+        <activity android:name=".ArticleAdapter"/>
     </application>
 
 </manifest>
