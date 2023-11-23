@@ -7,6 +7,14 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
+//1.로그인, 회원가입 디자인 다시 짜기 => 영서
+//2.게시물 수정할 수 있게 + 판매중판매완료 레이아웃 넣기 => 다솔
+//3.상세페이지 연결+ 필터링 =>진혁
+//4.채팅 레이아웃 => 시현
+
+
+
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
