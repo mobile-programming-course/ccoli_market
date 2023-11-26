@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ccoli_market.databinding.ActivityDetailBinding
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 
 class DetailActivity : AppCompatActivity() {
 
@@ -22,10 +23,12 @@ class DetailActivity : AppCompatActivity() {
         val sellerId = intent.getStringExtra("sellerId")
         val title = intent.getStringExtra("title")
         val price = intent.getStringExtra("price")
-        val uri = intent.getStringExtra("uri")
         val content = intent.getStringExtra("content")
+        val imageUrl = intent.getStringExtra("imageUrl")
 
-        Log.d("DetailActivity", "sellerId: $sellerId, title: $title, price: $price, uri: $uri, content: $content")
+        Log.d("DetailActivity", "imageUrl:$imageUrl")
+
+        Picasso.get().load(imageUrl).into(binding.detailImage)
 
         //binding.detailImage.setImageResource(/* 이미지 리소스 ID 또는 URI */)
         binding.nickname.text = sellerId
@@ -33,10 +36,6 @@ class DetailActivity : AppCompatActivity() {
         binding.detailContent.text = content
         binding.price.text = price
         binding.detailLikeIcon.setImageResource(if (isLiked) R.drawable.love_filled else R.drawable.love_empty)
-
-        binding.backButton.setOnClickListener {
-            onBackPressed()
-        }
 
         binding.detailLikeIcon.setOnClickListener {
             if (!isLiked) {
@@ -49,16 +48,12 @@ class DetailActivity : AppCompatActivity() {
             }
         }
         findViewById<Button>(R.id.messagebutton).setOnClickListener {
+
             val chatIntent = Intent(this, ChattingRoomActivity::class.java)
             startActivity(chatIntent)
         }
         binding.backButton.setOnClickListener {
             onBackPressed()
-        }
-        binding.backButton.setOnClickListener {
-            // product_list.xml 파일의 액티비티로 이동
-            val intent = Intent(this, HomeFragment::class.java)
-            startActivity(intent)
         }
     }
     private fun exit() {
