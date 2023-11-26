@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="TextView" />
+                    android:text="Message" />
 
                 <ImageView
                     android:id="@+id/likeIcon"
@@ -83,7 +83,7 @@
                     android:id="@+id/likeCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="Like" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

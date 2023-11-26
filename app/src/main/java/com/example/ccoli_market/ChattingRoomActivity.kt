@@ -52,7 +52,8 @@ class ChattingRoomActivity : AppCompatActivity() {
         database = Firebase.database.reference
 
         // 정보 담기
-        receiverName = intent.getStringExtra("name").toString() //상대방 이름
+        //receiverName = intent.getStringExtra("name").toString() //상대방 이름
+        receiverName = intent.getStringExtra("sellerId").toString() //상대방 이름
         receivedUid = intent.getStringExtra("uId").toString() //상대방 uId
 
         // 접속자 UID
