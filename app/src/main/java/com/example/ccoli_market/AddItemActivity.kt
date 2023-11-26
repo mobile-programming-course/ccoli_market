@@ -74,7 +74,7 @@ class AddItemActivity() : AppCompatActivity() {
                 }
             }
         }
-        findViewById<Button>(R.id.addItembtn).setOnClickListener {
+        findViewById<Button>(R.id.addbutton).setOnClickListener {
             val title = findViewById<EditText>(R.id.et_title).text.toString()
             val price = findViewById<EditText>(R.id.et_price).text.toString()
             val content = findViewById<EditText>(R.id.et_content).text.toString()
@@ -118,8 +118,16 @@ class AddItemActivity() : AppCompatActivity() {
             }
     }
     private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String, content:String) {
-        val model = ArticleModel(sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl, content)
-        articleDB.push().setValue(model)
+        val model = ArticleModel(null,sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl, content)
+        //articleDB.push().setValue(model)
+        val newRef = articleDB.push()
+        newRef.setValue(model.copy(articleModelId = newRef.key))
+
+/*        // 새로 추가된 게시글의 키를 가져와서 Intent에 담아 다음 액티비티로 전달
+        val articleId = newRef.key
+        val intent = Intent(this, HomeFragment::class.java)
+        intent.putExtra("articleModelId", articleId)
+        startActivity(intent)*/
     }
 
 

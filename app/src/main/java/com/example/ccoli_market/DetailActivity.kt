@@ -1,5 +1,6 @@
 package com.example.ccoli_market
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -30,19 +31,21 @@ class DetailActivity : AppCompatActivity() {
     private var isLiked = false
 
     private lateinit var sellerId : String
-    private lateinit var ArticleModelId : String //판매 상품의 id
     private lateinit var currentUserid : String //현재 유저의 id
-    private lateinit var Articleid : String //판매 상품의 id값
+    private lateinit var articleModelId : String //판매 상품의 id값
 
     private lateinit var articleDB : DatabaseReference
-
+    companion object {
+        const val EDIT_ITEM_REQUEST_CODE = 1001
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_detail)
         binding = ActivityDetailBinding.bind(findViewById(R.id.constLayout))
 
-        //Articleid = intent.getStringExtra("id")!!
+        articleModelId = intent.getStringExtra("articleModelId")!!
+
         val sellerId = intent.getStringExtra("sellerId")
         val title = intent.getStringExtra("title")
         val price = intent.getStringExtra("price")
@@ -114,26 +117,26 @@ class DetailActivity : AppCompatActivity() {
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(this, view)
         val inflater: MenuInflater = popupMenu.menuInflater
-        //if(currentUserid == sellerId) {
+        //if(auth.currentUser != null && auth.currentUser!!.uid == sellerId) {
             inflater.inflate(R.menu.popup_menu, popupMenu.menu)
         //} else {
-            //inflater.inflate(R.menu.popup_menu2, popupMenu.menu)
+        //    inflater.inflate(R.menu.popup_menu2, popupMenu.menu)
         //}
         //메뉴 클릭시 동작 정의
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.edit -> {
                     // 수정 클릭시
-                    val intent = Intent(this,AddItemActivity::class.java)
+                    val intent = Intent(this,EditItemActivity::class.java)
                     //게시글 아이디 넣어서 화면 이동
-                    //intent.putExtra("ArticleModelId", ArticleModelId) //판매 아이템 아이디 넘겨주기
-                    startActivity(intent)
+                    intent.putExtra("articleModelId", articleModelId) //판매 아이템 아이디 넘겨주기
+                    startActivityForResult(intent, EDIT_ITEM_REQUEST_CODE)
                     finish()
                     true
                 }
                 R.id.delete -> {
                     articleDB = FirebaseDatabase.getInstance().getReference("Articles")
-                    articleDB.child(ArticleModelId).removeValue() //데이터 삭제
+                    articleDB.child(articleModelId).removeValue() //데이터 삭제
                     finish() //현재 엑티비티 종료
                     Toast.makeText(this, "게시글이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     true
@@ -147,8 +150,31 @@ class DetailActivity : AppCompatActivity() {
         }
         popupMenu.show()
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    private fun exit() {
+        if (requestCode == DetailActivity.EDIT_ITEM_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val editedTitle = data?.getStringExtra("editedTitle")
+            val editedPrice = data?.getStringExtra("editedPrice")
+            val editedContent = data?.getStringExtra("editedContent")
+
+            if (articleModelId != null && editedTitle != null && editedPrice != null && editedContent != null) {
+                // 수정된 데이터를 사용하여 화면을 갱신하는 로직을 여기에 추가
+
+                // 수정된 데이터를 Intent에 담아서 setResult로 전달
+                val resultIntent = Intent().apply {
+                    putExtra("articleModelId", articleModelId)
+                    putExtra("editedTitle", editedTitle)
+                    putExtra("editedPrice", editedPrice)
+                    putExtra("editedContent", editedContent)
+                }
+                setResult(Activity.RESULT_OK, resultIntent)
+
+                // 현재 엑티비티 종료
+                finish()
+            }
+        }
+    }    private fun exit() {
         val likePosition = intent.getIntExtra("likePosition", 0)
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("likePosition", likePosition)
