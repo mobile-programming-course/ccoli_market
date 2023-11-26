@@ -62,42 +62,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             if (auth.currentUser != null){
                 // todo 로그인을 한 상태
 
-                if(auth.currentUser!!.uid != articleModel.sellerId){
+                val chatRoom = ChatListItem(
+                    buyerId = auth.currentUser!!.uid,
+                    sellerId = articleModel.sellerId,
+                    itemTitle = articleModel.title,
+                    key = System.currentTimeMillis()
+                )
 
-                    val chatRoom = ChatListItem(
-                        buyerId = auth.currentUser!!.uid,
-                        sellerId = articleModel.sellerId,
-                        itemTitle = articleModel.title,
-                        key = System.currentTimeMillis()
-                    )
+                userDB.child(auth.currentUser!!.uid)
+                    .child(CHILD_CHAT)
+                    .push()
+                    .setValue(chatRoom)
 
-                    userDB.child(auth.currentUser!!.uid)
-                        .child(CHILD_CHAT)
-                        .push()
-                        .setValue(chatRoom)
+                userDB.child(articleModel.sellerId)
+                    .child(CHILD_CHAT)
+                    .push()
+                    .setValue(chatRoom)
 
-                    userDB.child(articleModel.sellerId)
-                        .child(CHILD_CHAT)
-                        .push()
-                        .setValue(chatRoom)
+                val intent = Intent(requireContext(), DetailActivity::class.java).apply {
+                    putExtra("sellerId", articleModel.sellerId)
+                    putExtra("title", articleModel.title)
+                    putExtra("price", articleModel.price)
+                    putExtra("imageUrl", articleModel.imageUrl)
+                    putExtra("content", articleModel.content)
+                }
 
-                    val intent = Intent(requireContext(), DetailActivity::class.java).apply {
-                        putExtra("sellerId", articleModel.sellerId)
-                        putExtra("title", articleModel.title)
-                        putExtra("price", articleModel.price)
-                        putExtra("imageUrl", articleModel.imageUrl)
-                        putExtra("content", articleModel.content)
-                    }
-
-                    startActivity(intent)
-
-                    //Snackbar.make(view,"채팅방이 생성되었습니다. 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
-
-                } /*else {
-                    // todo 내가 올린 아이템일 때
-                    Snackbar.make(view,"내가 올린 아이템 입니다.", Snackbar.LENGTH_LONG).show()
-
-                }*/
+                startActivity(intent)
 
             } else {
                 // todo 로그인을 안한 상태
