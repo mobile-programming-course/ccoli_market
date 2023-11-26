@@ -11,7 +11,8 @@ data class ArticleModel(
     val createdAt: Long,
     val price: String,
     val imageUrl: String,
-    val content: String
+    val content: String,
+    val uri:String?=null
 )
 {
     constructor(): this("","",0,"","","")

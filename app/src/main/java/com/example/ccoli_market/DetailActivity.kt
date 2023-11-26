@@ -18,14 +18,21 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val sellerId = intent.getStringExtra("sellerId")
+        val title = intent.getStringExtra("title")
+        val price = intent.getStringExtra("price")
+        val uri = intent.getStringExtra("uri")
+        val content = intent.getStringExtra("content")
+
+
         val receivedItem = intent.getParcelableExtra<MyItem>("myItem")
         receivedItem?.let {
             binding.detailImage.setImageResource(it.listImage)
-            binding.nickname.text = it.nickname
+            binding.nickname.text = sellerId
             binding.address.text = it.listAddress
-            binding.detailTitle.text = it.listTitle
+            binding.detailTitle.text = title
             binding.detailContent.text = it.detailContent
-            binding.price.text = it.listPrice
+            binding.price.text = price
             isLiked = it.isLiked == true
             binding.detailLikeIcon.setImageResource(if (isLiked) {R.drawable.love_filled} else {R.drawable.love_empty})
             binding.backButton.setOnClickListener {
@@ -44,6 +51,11 @@ class DetailActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.messagebutton).setOnClickListener {
             val intent = Intent(this, ChattingRoomActivity::class.java)
+            startActivity(intent)
+        }
+        binding.backButton.setOnClickListener {
+            // product_list.xml 파일의 액티비티로 이동
+            val intent = Intent(this, HomeFragment::class.java)
             startActivity(intent)
         }
     }

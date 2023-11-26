@@ -7,3 +7,10 @@ data class User(
     var school: String = "",
     var uId: String = ""
 )
+
+//class User {
+//    var name: String? = null
+//    var profileImgUrl: String? = null
+//    var uid: String? = null
+//    var pushToken: String? = null
+//}
