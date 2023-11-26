@@ -3,19 +3,27 @@ package com.example.ccoli_market
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.ktx.Firebase
 
 class SignUpActivity : AppCompatActivity() {
-
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sign_up_page)
+
+        database = Firebase.database.reference
+        auth = Firebase.auth
 
         val checkBox = findViewById<CheckBox>(R.id.sign_up_checkBox)
         val signUpButton = findViewById<Button>(R.id.sign_up_page_btn)
@@ -37,7 +45,6 @@ class SignUpActivity : AppCompatActivity() {
         button.setOnClickListener {
             if (isChecked) {
                 signUp()
-                showToast(this, "가입에 성공하였습니다.")
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             } else {
@@ -49,13 +56,23 @@ class SignUpActivity : AppCompatActivity() {
     private fun signUp() {
         val email = findViewById<EditText>(R.id.sign_up_email).text.toString()
         val password = findViewById<EditText>(R.id.sign_up_password).text.toString()
-
-        Firebase.auth.createUserWithEmailAndPassword(email, password)
+        val name=findViewById<EditText>(R.id.editTextName).text.toString()
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val user = Firebase.auth.currentUser
+                    showToast(this, "회원가입에 성공하였습니다.")
+                    val user = auth.currentUser
+                    val uId = auth.currentUser?.uid!! //현재 사용자의 uid
+                    addUser(name,email, uId)
+                }
+                else{
+                    showToast(this, "회원가입에 실패하였습니다.")
                 }
             }
+    }
+    private fun addUser(name:String,email: String,uId:String){
+        database.child("userInfo").child(uId).setValue(User(name,email,uId))
+
     }
 
     private fun showToast(context: Context, message: String) {
