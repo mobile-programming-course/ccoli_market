@@ -85,7 +85,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         putExtra("sellerId", articleModel.sellerId)
                         putExtra("title", articleModel.title)
                         putExtra("price", articleModel.price)
-                        putExtra("uri", articleModel.uri)
+                        putExtra("imageUrl", articleModel.imageUrl)
                         putExtra("content", articleModel.content)
                     }
 
@@ -93,11 +93,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                     //Snackbar.make(view,"채팅방이 생성되었습니다. 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
 
-                } else {
+                } /*else {
                     // todo 내가 올린 아이템일 때
                     Snackbar.make(view,"내가 올린 아이템 입니다.", Snackbar.LENGTH_LONG).show()
 
-                }
+                }*/
 
             } else {
                 // todo 로그인을 안한 상태
