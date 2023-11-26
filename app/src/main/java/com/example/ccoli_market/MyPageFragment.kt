@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.ccoli_market.R
-import com.example.ccoli_market.databinding.FragmentChatlistBinding
+//import com.example.ccoli_market.databinding.FragmentChatlistBinding
 import com.example.ccoli_market.databinding.FragmentMypageBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
