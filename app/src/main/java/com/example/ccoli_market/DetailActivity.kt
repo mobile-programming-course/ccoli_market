@@ -42,7 +42,7 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
         binding = ActivityDetailBinding.bind(findViewById(R.id.constLayout))
 
-        Articleid = intent.getStringExtra("id")!!
+        //Articleid = intent.getStringExtra("id")!!
         val sellerId = intent.getStringExtra("sellerId")
         val title = intent.getStringExtra("title")
         val price = intent.getStringExtra("price")
@@ -53,7 +53,7 @@ class DetailActivity : AppCompatActivity() {
         articleDB = FirebaseDatabase.getInstance().getReference("Articles")
 
         binding.nickname.text = sellerId
-        //binding.detailTitle.text = title
+        binding.detailTitle.text = title
         binding.detailContent.text = content
         binding.price.text = price
         binding.detailLikeIcon.setImageResource(if (isLiked) R.drawable.love_filled else R.drawable.love_empty)
