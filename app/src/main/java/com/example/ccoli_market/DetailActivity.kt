@@ -17,7 +17,6 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_detail)
-
         binding = ActivityDetailBinding.bind(findViewById(R.id.constLayout))
 
         val sellerId = intent.getStringExtra("sellerId")
@@ -55,6 +54,11 @@ class DetailActivity : AppCompatActivity() {
         }
         binding.backButton.setOnClickListener {
             onBackPressed()
+        }
+        binding.backButton.setOnClickListener {
+            // product_list.xml 파일의 액티비티로 이동
+            val intent = Intent(this, HomeFragment::class.java)
+            startActivity(intent)
         }
     }
     private fun exit() {

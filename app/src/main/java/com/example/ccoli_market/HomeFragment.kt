@@ -88,6 +88,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         putExtra("uri", articleModel.uri)
                         putExtra("content", articleModel.content)
                     }
+
                     startActivity(intent)
 
                     //Snackbar.make(view,"채팅방이 생성되었습니다. 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()

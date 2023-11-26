@@ -13,6 +13,7 @@ data class ArticleModel(
     val imageUrl: String,
     val content: String,
     val uri: String? = null
+
 )
 {
     constructor(): this("","",0,"","","")
