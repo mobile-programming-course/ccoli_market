@@ -6,11 +6,6 @@
         android:title="@string/home" />
 
     <item
-        android:id="@+id/addItem"
-        android:icon="@drawable/additem"
-        android:title="@string/additem" />
-
-    <item
         android:id="@+id/chatList"
         android:icon="@drawable/chat_icon"
         android:title="@string/chat" />
