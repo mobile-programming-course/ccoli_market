@@ -46,6 +46,7 @@
         <activity android:name=".SignUpActivity"/>
         <activity android:name=".AddItemActivity"/>
         <activity android:name=".ArticleAdapter"/>
+        <activity android:name=".EditItemActivity"/>
     </application>
 
 </manifest>
