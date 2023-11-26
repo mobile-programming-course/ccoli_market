@@ -18,6 +18,7 @@ import com.google.firebase.database.ktx.database
 
 import com.google.firebase.ktx.Firebase
 
+//product_list.xml 다루는 kt파일
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var binding: FragmentHomeBinding? = null
@@ -80,7 +81,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         .push()
                         .setValue(chatRoom)
 
-                    Snackbar.make(view,"채팅방이 생성되었습니다. 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
+                    val intent = Intent(requireContext(), DetailActivity::class.java).apply {
+                        putExtra("sellerId", articleModel.sellerId)
+                        putExtra("title", articleModel.title)
+                        putExtra("price", articleModel.price)
+                        putExtra("uri", articleModel.uri)
+                        putExtra("content", articleModel.content)
+                    }
+                    startActivity(intent)
+
+                    //Snackbar.make(view,"채팅방이 생성되었습니다. 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
 
                 } else {
                     // todo 내가 올린 아이템일 때
