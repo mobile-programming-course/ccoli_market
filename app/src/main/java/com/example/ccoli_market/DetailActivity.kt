@@ -2,6 +2,7 @@ package com.example.ccoli_market
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ccoli_market.databinding.ActivityDetailBinding
@@ -15,8 +16,8 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_detail)
+        binding = ActivityDetailBinding.bind(findViewById(R.id.constLayout))
 
         val sellerId = intent.getStringExtra("sellerId")
         val title = intent.getStringExtra("title")
@@ -24,34 +25,35 @@ class DetailActivity : AppCompatActivity() {
         val uri = intent.getStringExtra("uri")
         val content = intent.getStringExtra("content")
 
+        Log.d("DetailActivity", "sellerId: $sellerId, title: $title, price: $price, uri: $uri, content: $content")
 
-        val receivedItem = intent.getParcelableExtra<MyItem>("myItem")
-        receivedItem?.let {
-            binding.detailImage.setImageResource(it.listImage)
-            binding.nickname.text = sellerId
-            binding.address.text = it.listAddress
-            binding.detailTitle.text = title
-            binding.detailContent.text = it.detailContent
-            binding.price.text = price
-            isLiked = it.isLiked == true
-            binding.detailLikeIcon.setImageResource(if (isLiked) {R.drawable.love_filled} else {R.drawable.love_empty})
-            binding.backButton.setOnClickListener {
-                exit()
-            }
-            binding.detailLikeIcon.setOnClickListener {
-                if(!isLiked){
-                    binding.detailLikeIcon.setImageResource(R.drawable.love_filled)
-                    Snackbar.make(binding.constLayout, "관심 목록에 추가되었습니다.", Snackbar.LENGTH_SHORT).show()
-                    isLiked = true
-                }else {
-                    binding.detailLikeIcon.setImageResource(R.drawable.love_empty)
-                    isLiked = false
-                }
+        //binding.detailImage.setImageResource(/* 이미지 리소스 ID 또는 URI */)
+        binding.nickname.text = sellerId
+        binding.detailTitle.text = title
+        binding.detailContent.text = content
+        binding.price.text = price
+        binding.detailLikeIcon.setImageResource(if (isLiked) R.drawable.love_filled else R.drawable.love_empty)
+
+        binding.backButton.setOnClickListener {
+            onBackPressed()
+        }
+
+        binding.detailLikeIcon.setOnClickListener {
+            if (!isLiked) {
+                binding.detailLikeIcon.setImageResource(R.drawable.love_filled)
+                Snackbar.make(binding.constLayout, "관심 목록에 추가되었습니다.", Snackbar.LENGTH_SHORT).show()
+                isLiked = true
+            } else {
+                binding.detailLikeIcon.setImageResource(R.drawable.love_empty)
+                isLiked = false
             }
         }
         findViewById<Button>(R.id.messagebutton).setOnClickListener {
-            val intent = Intent(this, ChattingRoomActivity::class.java)
-            startActivity(intent)
+            val chatIntent = Intent(this, ChattingRoomActivity::class.java)
+            startActivity(chatIntent)
+        }
+        binding.backButton.setOnClickListener {
+            onBackPressed()
         }
         binding.backButton.setOnClickListener {
             // product_list.xml 파일의 액티비티로 이동
