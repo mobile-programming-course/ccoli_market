@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
+    <ImageButton
+        android:id="@+id/backBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="뒤로가기"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/black"
+        android:background="@drawable/previous"
+        android:elevation="10dp"/>
+
     <TextView
         android:id="@+id/sign_up_page_text1"
         android:layout_width="wrap_content"
