@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -27,6 +28,9 @@ class SignUpActivity : AppCompatActivity() {
 
         val checkBox = findViewById<CheckBox>(R.id.sign_up_checkBox)
         val signUpButton = findViewById<Button>(R.id.sign_up_page_btn)
+        val backBtn = findViewById<ImageButton>(R.id.backBtn)
+
+        backBtnListener(backBtn)
 
         // 초기값 설정
         var isChecked = false
@@ -39,6 +43,12 @@ class SignUpActivity : AppCompatActivity() {
 
         // 초기 버튼 리스너 설정
         updateButtonListener(signUpButton, isChecked)
+    }
+
+    private fun backBtnListener(backBtn: ImageButton) {
+        backBtn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun updateButtonListener(button: Button, isChecked: Boolean) {
