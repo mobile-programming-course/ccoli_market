@@ -51,7 +51,7 @@ class DetailActivity : AppCompatActivity() {
         val price = intent.getStringExtra("price")
         val content = intent.getStringExtra("content")
         val imageUrl = intent.getStringExtra("imageUrl")
-
+        val status=intent.getStringExtra("status")
         Picasso.get().load(imageUrl).into(binding.detailImage)
         articleDB = FirebaseDatabase.getInstance().getReference("Articles")
 
@@ -59,6 +59,7 @@ class DetailActivity : AppCompatActivity() {
         binding.detailTitle.text = title
         binding.detailContent.text = content
         binding.price.text = price
+        binding.status.text=status
         binding.detailLikeIcon.setImageResource(if (isLiked) R.drawable.love_filled else R.drawable.love_empty)
 
         if (auth.currentUser != null && auth.currentUser!!.uid == sellerId) {

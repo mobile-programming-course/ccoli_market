@@ -13,11 +13,12 @@ data class ArticleModel(
     val price: String,
     val imageUrl: String,
     val content: String,
+    val status:String,
     val uri: String? = null
 
 )
 {
-    constructor(): this("","","",0,"","","")
+    constructor(): this("","","",0,"","","","")
 
     companion object {
         val Articles = mutableListOf<ArticleModel>()
