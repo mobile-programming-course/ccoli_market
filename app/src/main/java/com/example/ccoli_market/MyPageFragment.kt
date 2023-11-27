@@ -7,7 +7,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 
 import com.example.ccoli_market.R
-import com.example.ccoli_market.databinding.FragmentChatlistBinding
+//import com.example.ccoli_market.databinding.FragmentChatlistBinding
 
 import com.example.ccoli_market.databinding.FragmentMypageBinding
 import com.google.android.material.snackbar.Snackbar

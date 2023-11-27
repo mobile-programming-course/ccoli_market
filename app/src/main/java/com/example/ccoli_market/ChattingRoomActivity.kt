@@ -69,7 +69,7 @@ class ChattingRoomActivity : AppCompatActivity() {
         binding.tvReceiverName.text = receiverName //상대방 이름 상단에 띄우기
 
         //뒤로가기 버튼 구현
-        binding.ivBack.setOnClickListener {
+        binding.chatback.setOnClickListener {
             finish() //엑티비티 종료
         }
 
