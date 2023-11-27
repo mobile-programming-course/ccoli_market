@@ -84,7 +84,7 @@ class AddItemActivity() : AppCompatActivity() {
                 uploadPhoto(
                     photoUri,
                     successHandler = { uri ->
-                        uploadArticle(sellerId, title, price, uri, content)
+                        uploadArticle(sellerId, title, price, uri, content,"판매중")
                         finish()
                     },
                     errorHandler = {
@@ -92,7 +92,7 @@ class AddItemActivity() : AppCompatActivity() {
                     }
                 )
             } else {
-                uploadArticle(sellerId, title, price, "",content)
+                uploadArticle(sellerId, title, price, "",content,"판매중")
                 finish()
             }
 
@@ -117,8 +117,8 @@ class AddItemActivity() : AppCompatActivity() {
                 }
             }
     }
-    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String, content:String) {
-        val model = ArticleModel(null,sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl, content)
+    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String, content:String,status:String) {
+        val model = ArticleModel(null,sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl,content,status)
         //articleDB.push().setValue(model)
         val newRef = articleDB.push()
         newRef.setValue(model.copy(articleModelId = newRef.key))

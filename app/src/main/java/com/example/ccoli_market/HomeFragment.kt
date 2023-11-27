@@ -87,6 +87,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     putExtra("price", articleModel.price)
                     putExtra("imageUrl", articleModel.imageUrl)
                     putExtra("content", articleModel.content)
+                    putExtra("status",articleModel.status)
                 }
 
                 startActivity(intent)
@@ -123,9 +124,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val editedTitle = data?.getStringExtra("editedTitle")
             val editedPrice = data?.getStringExtra("editedPrice")
             val editedContent = data?.getStringExtra("editedContent")
-
+            val editedStatus= data?.getStringExtra("editedStatus")
             // 여기에서 받은 데이터를 사용하여 화면을 갱신하는 작업을 수행
-            if (editedArticleModelId != null && editedTitle != null && editedPrice != null && editedContent != null) {
+            if (editedArticleModelId != null && editedTitle != null && editedPrice != null && editedContent != null&&editedStatus!=null) {
                 // 수정된 아이템을 찾아서 업데이트
                 val index = articleList.indexOfFirst { it.articleModelId == editedArticleModelId }
                 if (index != -1) {
@@ -136,7 +137,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         createdAt = System.currentTimeMillis(),
                         price = editedPrice,
                         imageUrl = "", // TODO: 이미지 URL에 대한 처리가 필요함
-                        content = editedContent
+                        content = editedContent,
+                        status=editedStatus
                     )
                     articleList[index] = editedArticle
                     articleAdapter.notifyItemChanged(index)
