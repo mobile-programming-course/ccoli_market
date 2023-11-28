@@ -79,7 +79,7 @@ class ChattingRoomItemRecyclerViewAdapter(var context: Context) : //화면에 �
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChattingRoomActivity::class.java)
             // 상대방의 UID와 이름을 intent에 담아서 이동
-            intent.putExtra("sellerId",currentUser.chatUserName) //name
+            intent.putExtra("name",currentUser.chatUserName) //name
             intent.putExtra("uId",currentUser.userId) //uId
             context.startActivity(intent) // 채팅방으로 이동
         }

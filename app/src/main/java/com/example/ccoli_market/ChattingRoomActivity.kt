@@ -53,7 +53,7 @@ class ChattingRoomActivity : AppCompatActivity() {
 
         // 정보 담기
         //receiverName = intent.getStringExtra("name").toString() //상대방 이름
-        receiverName = intent.getStringExtra("sellerId").toString() //상대방 이름
+        receiverName = intent.getStringExtra("name").toString() //상대방 이름
         receivedUid = intent.getStringExtra("uId").toString() //상대방 uId
 
         // 접속자 UID
@@ -84,7 +84,7 @@ class ChattingRoomActivity : AppCompatActivity() {
                 .setValue(messageObject).addOnSuccessListener { // 보낸 메시지 DB에 삽입
                     //삽입 성공시
                     //데이터 저장 : 받는 쪽 대화방
-                    database.child("chats").child(receiverRoom).child("messages").push()
+                    database.child("chats").child(receiverRoom).child("remessages").push()
                         .setValue(messageObject)
                 }
             binding.etMessage.setText("") //초기화
