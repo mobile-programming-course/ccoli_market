@@ -31,16 +31,22 @@ class EditItemActivity : AppCompatActivity() {
 
         // 기존의 게시글 내용을 불러와 EditText에 표시
         loadArticleDetails(articleModelId)
-
+        binding.radiogroup.check(R.id.radioButton)
         // 수정 버튼 클릭 시 동작
         binding.editButton.setOnClickListener {
             // EditText에서 수정된 내용 가져오기
             val editedTitle = binding.editTitle.text.toString()
             val editedPrice = binding.editPrice.text.toString()
             val editedContent = binding.editContent.text.toString()
-
+//            var editedstatus="판매중"
+            val checkedRadioButtonId=binding.radiogroup.checkedRadioButtonId
+            val editedStatus = when (checkedRadioButtonId) {
+                R.id.radioButton -> "판매중"
+                R.id.radioButton2 -> "판매완료"
+                else -> "판매중" // 선택된 라디오 버튼이 없을 경우 기본값 설정
+            }
             // 수정된 내용으로 데이터베이스 업데이트
-            updateArticle(articleModelId, editedTitle, editedPrice, editedContent)
+            updateArticle(articleModelId, editedTitle, editedPrice, editedContent, editStatus = editedStatus)
 
             // 수정 결과를 DetailActivity로 돌려주기
             val resultIntent = Intent()
@@ -48,6 +54,7 @@ class EditItemActivity : AppCompatActivity() {
             resultIntent.putExtra("editedTitle", editedTitle)
             resultIntent.putExtra("editedPrice", editedPrice)
             resultIntent.putExtra("editedContent", editedContent)
+            resultIntent.putExtra("editedStatus",editedStatus)
             setResult(RESULT_OK, resultIntent)
 
             // 화면 종료
@@ -64,7 +71,6 @@ class EditItemActivity : AppCompatActivity() {
                 val title = snapshot.child("title").getValue(String::class.java)
                 val price = snapshot.child("price").getValue(String::class.java)
                 val content = snapshot.child("content").getValue(String::class.java)
-
                 // 가져온 내용을 EditText에 표시
                 binding.editTitle.setText(title)
                 binding.editPrice.setText(price)
@@ -85,14 +91,16 @@ class EditItemActivity : AppCompatActivity() {
         articleModelId: String,
         editedTitle: String,
         editedPrice: String,
-        editedContent: String
+        editedContent: String,
+        editStatus:String
     ) {
         // Firebase 데이터베이스에서 해당 게시글 업데이트
         // 이 부분은 실제 데이터베이스의 구조에 따라 수정이 필요할 수 있습니다.
         val updateData = mapOf(
             "title" to editedTitle,
             "price" to editedPrice,
-            "content" to editedContent
+            "content" to editedContent,
+            "status" to editStatus
             // 필요한 경우 다른 필드도 추가할 수 있습니다.
         )
 
