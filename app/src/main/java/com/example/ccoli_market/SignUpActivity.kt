@@ -15,14 +15,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.ktx.Firebase
-
 class SignUpActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sign_up_page)
-
         database = Firebase.database.reference
         auth = Firebase.auth
 
@@ -71,17 +69,24 @@ class SignUpActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     showToast(this, "회원가입에 성공하였습니다.")
-                    val user = auth.currentUser
-                    val uId = auth.currentUser?.uid!! //현재 사용자의 uid
+//                    val user = auth.currentUser
+                    val uId = Firebase.auth.currentUser?.uid!! //현재 사용자의 uid
                     addUser(name,email, uId)
                 }
                 else{
                     showToast(this, "회원가입에 실패하였습니다.")
                 }
             }
+        showToast(this, "회원가입에 성공하였습니다.")
+        val uId = Firebase.auth.currentUser?.uid!!
+        addUser(name,email, uId)
     }
     private fun addUser(name:String,email: String,uId:String){
-        database.child("userInfo").child(uId).setValue(User(name,email,uId))
+        val user = User(name = name, email = email,uId=uId)
+        database.child("userInfo").child(uId).setValue(user)
+//        database.child("$uId").child("email").setValue(User(email))
+
+//        database.child("userInfo").child(uId).setValue(User(name,email,uId))
 
     }
 
