@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ccoli_market.DBKey.Companion.CHILD_CHAT
@@ -27,6 +29,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var articleAdapter: ArticleAdapter
     private lateinit var articleDB: DatabaseReference
     private lateinit var userDB: DatabaseReference
+
+    private var statusFilter: String = "전체"
+    private val spinnerItems = listOf("전체", "판매중", "판매완료")
 
     private val articleList = mutableListOf<ArticleModel>()
     private val listener = object : ChildEventListener {
@@ -56,6 +61,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding = fragmentHomeBinding
 
         articleList.clear()
+
+
+        val spinner = fragmentHomeBinding.spinner
+        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, spinnerItems)
+        spinner.adapter = spinnerAdapter
+
+        // Spinner 아이템 선택 리스너 설정
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // 선택된 아이템에 따라 필터링 수행
+                statusFilter = spinnerItems[position]
+                filterData()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // 아무것도 선택되지 않았을 때의 동작 (필요에 따라 구현)
+            }
+        }
+
 
         articleDB = Firebase.database.reference.child(DB_ARTICLES)
         userDB = Firebase.database.reference.child(DB_USERS)
@@ -101,6 +125,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         } )
 
+        
+
         fragmentHomeBinding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         fragmentHomeBinding.articleRecyclerView.adapter = articleAdapter
 
@@ -115,6 +141,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         articleDB.addChildEventListener(listener)
 
+    }
+    private fun filterData() {
+        // 선택된 아이템에 따라 데이터를 필터링하여 새로운 리스트 생성
+        val filteredList = when (statusFilter) {
+            "전체" -> articleList // 전체인 경우, 원본 리스트 반환
+            "판매중" -> articleList.filter { it.status == "판매중" }
+            "판매완료" -> articleList.filter { it.status == "판매완료" }
+            else -> articleList // 기본적으로 전체 반환
+        }
+
+        // 필터링된 리스트를 어댑터에 전달하여 업데이트
+        articleAdapter.submitList(filteredList)
     }
 
     override fun onResume() {
