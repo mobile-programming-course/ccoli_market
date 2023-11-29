@@ -134,14 +134,15 @@ class DetailActivity : AppCompatActivity() {
                     val intent = Intent(this,EditItemActivity::class.java)
                     //게시글 아이디 넣어서 화면 이동
                     intent.putExtra("articleModelId", articleModelId) //판매 아이템 아이디 넘겨주기
-                    startActivityForResult(intent, EDIT_ITEM_REQUEST_CODE)
+                    startActivity(intent)
                     finish()
                     true
                 }
                 R.id.delete -> {
                     articleDB = FirebaseDatabase.getInstance().getReference("Articles")
                     articleDB.child(articleModelId).removeValue() //데이터 삭제
-                    finish() //현재 엑티비티 종료
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                     Toast.makeText(this, "게시글이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                     true
                 }
