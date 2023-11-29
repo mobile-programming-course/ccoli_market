@@ -45,6 +45,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.bind(findViewById(R.id.constLayout))
 
         articleModelId = intent.getStringExtra("articleModelId")!!
+        sellerId = intent.getStringExtra("sellerId") ?: ""
 
         val sellerId = intent.getStringExtra("sellerId")
         val title = intent.getStringExtra("title")
@@ -118,11 +119,11 @@ class DetailActivity : AppCompatActivity() {
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(this, view)
         val inflater: MenuInflater = popupMenu.menuInflater
-        //if(auth.currentUser != null && auth.currentUser!!.uid == sellerId) {
+        if(auth.currentUser != null && auth.currentUser!!.uid == sellerId) {
             inflater.inflate(R.menu.popup_menu, popupMenu.menu)
-        //} else {
-        //    inflater.inflate(R.menu.popup_menu2, popupMenu.menu)
-        //}
+        } else {
+            inflater.inflate(R.menu.popup_menu2, popupMenu.menu)
+        }
         //메뉴 클릭시 동작 정의
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
