@@ -66,10 +66,10 @@ class ChattingRoomActivity : AppCompatActivity() {
         //=> 위 값을 활용하여 채팅을 보내면 2개의 방에 각각 데이터 삽입
 
 
-        binding.tvReceiverName.text = receiverName //상대방 이름 상단에 띄우기
+        binding.nickname.text = receiverName //상대방 이름 상단에 띄우기
 
         //뒤로가기 버튼 구현
-        binding.chatback.setOnClickListener {
+        binding.backButton.setOnClickListener {
             finish() //엑티비티 종료
         }
 
@@ -94,7 +94,7 @@ class ChattingRoomActivity : AppCompatActivity() {
         messageList = ArrayList()
 
         //채팅목록 리사이클러뷰 초기화
-        messageRecyclerView = binding.recyclerviewChatting
+        messageRecyclerView = binding.recyclerView
         messageRecyclerViewAdapter = MessageAdapter(messageList) // 어댑터 생성
         messageRecyclerView.layoutManager = LinearLayoutManager(this) //레이아웃 설정
         messageRecyclerView.adapter = messageRecyclerViewAdapter // 어댑터 부착

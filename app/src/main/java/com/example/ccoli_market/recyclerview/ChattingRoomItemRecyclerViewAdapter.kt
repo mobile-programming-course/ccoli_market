@@ -19,12 +19,12 @@ class ChattingRoomItemRecyclerViewAdapter(var context: Context) : //화면에 �
 
     private var chattingRoomItems: List<ChattingRoomItem> = emptyList() //화면에 보여줄 데이터들
 
-    val predefinedColors = listOf(
-        Color.parseColor("#FFC107"), // Amber
-        Color.parseColor("#FF5722"), // Deep Orange
-        Color.parseColor("#4CAF50"), // Green
-        Color.parseColor("#03A9F4")  // Light Blue
-    )
+//    val predefinedColors = listOf(
+//        Color.parseColor("#FFC107"), // Amber
+//        Color.parseColor("#FF5722"), // Deep Orange
+//        Color.parseColor("#4CAF50"), // Green
+//        Color.parseColor("#03A9F4")  // Light Blue
+//    )
 
 
     //(2) ViewHolder패턴 => View를 Holder에 넣어두었다가 재사용을 하기 위함
@@ -72,7 +72,7 @@ class ChattingRoomItemRecyclerViewAdapter(var context: Context) : //화면에 �
         holder.chatUserName.text = currentUser.chatUserName
         holder.lastChat.text = currentUser.lastChat
 
-        holder.cardView.setCardBackgroundColor(predefinedColors[currentUser.chatItemImage])
+//        holder.cardView.setCardBackgroundColor(predefinedColors[currentUser.chatItemImage])
 
         // 아이템 클릭시 이벤트
         // 채팅방으로 이동하는 부분
