@@ -115,38 +115,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         articleDB.addChildEventListener(listener)
 
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == DetailActivity.EDIT_ITEM_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // 수정된 데이터를 받아서 화면 갱신 등의 작업을 수행
-            val editedArticleModelId = data?.getStringExtra("articleModelId")
-            val editedTitle = data?.getStringExtra("editedTitle")
-            val editedPrice = data?.getStringExtra("editedPrice")
-            val editedContent = data?.getStringExtra("editedContent")
-            val editedStatus= data?.getStringExtra("editedStatus")
-            // 여기에서 받은 데이터를 사용하여 화면을 갱신하는 작업을 수행
-            if (editedArticleModelId != null && editedTitle != null && editedPrice != null && editedContent != null&&editedStatus!=null) {
-                // 수정된 아이템을 찾아서 업데이트
-                val index = articleList.indexOfFirst { it.articleModelId == editedArticleModelId }
-                if (index != -1) {
-                    val editedArticle = ArticleModel(
-                        articleModelId = editedArticleModelId,
-                        sellerId = auth.currentUser?.uid ?: "",
-                        title = editedTitle,
-                        createdAt = System.currentTimeMillis(),
-                        price = editedPrice,
-                        imageUrl = "", // TODO: 이미지 URL에 대한 처리가 필요함
-                        content = editedContent,
-                        status=editedStatus
-                    )
-                    articleList[index] = editedArticle
-                    articleAdapter.notifyItemChanged(index)
-                }
-            }
-        }
-    }
-
 
     override fun onResume() {
         super.onResume()
