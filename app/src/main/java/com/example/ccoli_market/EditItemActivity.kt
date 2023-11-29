@@ -57,6 +57,9 @@ class EditItemActivity : AppCompatActivity() {
             resultIntent.putExtra("editedStatus",editedStatus)
             setResult(RESULT_OK, resultIntent)
 
+            val intent = Intent(this, HomeFragment::class.java)
+            startActivity(intent)
+
             // 화면 종료
             finish()
 

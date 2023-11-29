@@ -17,6 +17,7 @@ import com.example.ccoli_market.databinding.ActivityDetailBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import com.google.firebase.database.DatabaseReference
@@ -152,31 +153,8 @@ class DetailActivity : AppCompatActivity() {
         }
         popupMenu.show()
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == DetailActivity.EDIT_ITEM_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val editedTitle = data?.getStringExtra("editedTitle")
-            val editedPrice = data?.getStringExtra("editedPrice")
-            val editedContent = data?.getStringExtra("editedContent")
-
-            if (articleModelId != null && editedTitle != null && editedPrice != null && editedContent != null) {
-                // 수정된 데이터를 사용하여 화면을 갱신하는 로직을 여기에 추가
-
-                // 수정된 데이터를 Intent에 담아서 setResult로 전달
-                val resultIntent = Intent().apply {
-                    putExtra("articleModelId", articleModelId)
-                    putExtra("editedTitle", editedTitle)
-                    putExtra("editedPrice", editedPrice)
-                    putExtra("editedContent", editedContent)
-                }
-                setResult(Activity.RESULT_OK, resultIntent)
-
-                // 현재 엑티비티 종료
-                finish()
-            }
-        }
-    }    private fun exit() {
+    private fun exit() {
         val likePosition = intent.getIntExtra("likePosition", 0)
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("likePosition", likePosition)
