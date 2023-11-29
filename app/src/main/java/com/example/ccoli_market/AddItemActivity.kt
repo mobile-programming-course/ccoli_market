@@ -80,12 +80,14 @@ class AddItemActivity() : AppCompatActivity() {
             val content = findViewById<EditText>(R.id.et_content).text.toString()
             val sellerId = auth.currentUser?.uid.orEmpty()
             val userEmail = auth.currentUser?.email.orEmpty()
+            val userEmailArray= userEmail?.split('@')
+            val email=userEmailArray?.get(0).toString()
             if (selectedUri != null) {
                 val photoUri = selectedUri ?: return@setOnClickListener
                 uploadPhoto(
                     photoUri,
                     successHandler = { uri ->
-                        uploadArticle(sellerId,userEmail, title, price, uri, content,"판매중")
+                        uploadArticle(sellerId,email, title, price, uri, content,"판매중")
                         finish()
                     },
                     errorHandler = {
@@ -93,7 +95,7 @@ class AddItemActivity() : AppCompatActivity() {
                     }
                 )
             } else {
-                uploadArticle(sellerId,userEmail, title, price, "",content,"판매중")
+                uploadArticle(sellerId,email, title, price, "",content,"판매중")
                 finish()
             }
 
