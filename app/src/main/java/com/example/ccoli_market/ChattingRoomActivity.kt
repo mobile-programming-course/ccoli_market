@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.squareup.picasso.Picasso
 
 
 //채팅방
@@ -41,6 +42,7 @@ class ChattingRoomActivity : AppCompatActivity() {
     private lateinit var messageRecyclerView: RecyclerView
     private lateinit var messageRecyclerViewAdapter : MessageAdapter
 
+    private lateinit var userEmail: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,8 @@ class ChattingRoomActivity : AppCompatActivity() {
         //Firebase init
         auth = Firebase.auth
         database = Firebase.database.reference
+
+        userEmail = intent.getStringExtra("userEmail").toString()
 
         // 정보 담기
         receiverName = intent.getStringExtra("name").toString() //상대방 이름
@@ -65,7 +69,18 @@ class ChattingRoomActivity : AppCompatActivity() {
         //=> 위 값을 활용하여 채팅을 보내면 2개의 방에 각각 데이터 삽입
 
 
-        binding.nickname.text = receiverName //상대방 이름 상단에 띄우기
+        //데이터를 받기 위함
+        val userEmail = intent.getStringExtra("userEmail")
+        val title = intent.getStringExtra("title")
+        val price = intent.getStringExtra("price")
+        val imageUrl = intent.getStringExtra("imageUrl")
+
+        // 받아온 데이터를 각각의 TextView나 ImageView에 설정
+        binding.nickname.text = userEmail
+        binding.detailTitle.text = title
+        binding.price.text = price
+
+        Picasso.get().load(imageUrl).into(binding.detailImage)
 
         //뒤로가기 버튼 구현
         binding.backButton.setOnClickListener {

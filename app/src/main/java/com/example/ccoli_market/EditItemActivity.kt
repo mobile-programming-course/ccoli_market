@@ -26,11 +26,11 @@ class EditItemActivity : AppCompatActivity() {
         binding = ActivityEditItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // 기존의 이미지 URL을 가져와서 저장
-        originalImageUrl = intent.getStringExtra("imageUrl")
+/*        originalImageUrl = intent.getStringExtra("imageUrl")
         val imageUrl = intent.getStringExtra("imageUrl")
 
         // 기존의 이미지를 표시
-        Picasso.get().load(imageUrl).into(binding.editImage)
+        Picasso.get().load(imageUrl).into(binding.edit_image)*/
         // Firebase 데이터베이스 레퍼런스 설정
         articleDB = FirebaseDatabase.getInstance().getReference("Articles")
 

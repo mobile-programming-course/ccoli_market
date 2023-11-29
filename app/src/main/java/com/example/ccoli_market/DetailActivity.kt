@@ -54,7 +54,7 @@ class DetailActivity : AppCompatActivity() {
         val price = intent.getStringExtra("price")
         val content = intent.getStringExtra("content")
         val imageUrl = intent.getStringExtra("imageUrl")
-        val status=intent.getStringExtra("status")
+        val status = intent.getStringExtra("status")
         Picasso.get().load(imageUrl).into(binding.detailImage)
         articleDB = FirebaseDatabase.getInstance().getReference("Articles")
 
@@ -81,6 +81,10 @@ class DetailActivity : AppCompatActivity() {
                     isLiked = false
                 }
             }
+            if (status != "판매중") {
+                showToast("이미 판매된 상품입니다.")
+                disableButton(findViewById<Button>(R.id.messagebutton))
+            }
 
             findViewById<Button>(R.id.messagebutton).setOnClickListener {
                 // 판매자가 자신의 상품이 아닌 경우에만 동작
@@ -103,6 +107,10 @@ class DetailActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.messagebutton).setOnClickListener {
             val chatIntent = Intent(this, ChattingRoomActivity::class.java)
+            chatIntent.putExtra("userEmail", userEmail)
+            chatIntent.putExtra("title", title)
+            chatIntent.putExtra("price", price)
+            chatIntent.putExtra("imageUrl", imageUrl)
             startActivity(chatIntent)
         }
         binding.backButton.setOnClickListener {
