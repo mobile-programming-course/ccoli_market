@@ -83,6 +83,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 val intent = Intent(requireContext(), DetailActivity::class.java).apply {
                     putExtra("articleModelId", articleModel.articleModelId)
                     putExtra("sellerId", articleModel.sellerId)
+                    putExtra("userEmail",articleModel.userEmail)
                     putExtra("title", articleModel.title)
                     putExtra("price", articleModel.price)
                     putExtra("imageUrl", articleModel.imageUrl)

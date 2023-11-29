@@ -8,6 +8,7 @@ import com.google.firebase.database.ValueEventListener
 data class ArticleModel(
     val articleModelId: String? = null, // ArticleModelId 추가
     val sellerId: String,
+    val userEmail:String,
     val title: String,
     val createdAt: Long,
     val price: String,
@@ -18,7 +19,7 @@ data class ArticleModel(
 
 )
 {
-    constructor(): this("","","",0,"","","","")
+    constructor(): this("","","","",0,"","","","")
 
     companion object {
         val Articles = mutableListOf<ArticleModel>()
