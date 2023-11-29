@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.ccoli_market.databinding.ActivityEditItemBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -57,15 +58,20 @@ class EditItemActivity : AppCompatActivity() {
             resultIntent.putExtra("editedStatus",editedStatus)
             setResult(RESULT_OK, resultIntent)
 
-            val intent = Intent(this, HomeFragment::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-
+//            replaceFragment(HomeFragment())
             // 화면 종료
             finish()
 
         }
     }
-
+//    private fun replaceFragment(fragment: Fragment) {
+//        val transaction = supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.fragmentContainer, fragment) // R.id.fragmentContainer는 프래그먼트를 표시할 레이아웃의 ID입니다.
+//        transaction.addToBackStack(null) // 백스택에 추가하여 뒤로 가기 버튼으로 되돌릴 수 있도록 합니다.
+//        transaction.commit()
+//    }
     private fun loadArticleDetails(articleModelId: String) {
         // Firebase에서 기존 게시글의 내용 불러오기
         // 이 부분은 실제 데이터베이스의 구조에 따라 수정이 필요할 수 있습니다.
