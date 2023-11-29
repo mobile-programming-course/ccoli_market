@@ -7,8 +7,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
-        android:layout_width="442dp"
-        android:layout_height="171dp"
+        android:layout_width="409dp"
+        android:layout_height="167dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,23 +23,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintHorizontal_bias="0.184"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.222" />
-
-        <ImageView
-            android:id="@+id/detailImage"
-            android:layout_width="74dp"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sample8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.043"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.89" />
+            app:layout_constraintVertical_bias="0.100000024" />
 
         <TextView
             android:id="@+id/detailTitle"
@@ -52,32 +39,46 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.572"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.696" />
+            app:layout_constraintVertical_bias="0.496" />
+
+        <ImageView
+            android:id="@+id/detailImage"
+            android:layout_width="74dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/colli_icon2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.044"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.735" />
 
         <TextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="28dp"
             android:text="000,000원"
             android:textSize="22dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.302"
+            app:layout_constraintHorizontal_bias="0.321"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
         android:id="@+id/backButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/previous"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="@color/purple_500"
         android:contentDescription="뒤로가기"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -89,9 +90,8 @@
     <!--채팅 보내기-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,22 +101,22 @@
 
     <LinearLayout
         android:id="@+id/linearLayout_input"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="100">
+        android:weightSum="100"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
             android:id="@+id/et_message"
             android:layout_width="0dp"
             android:layout_height="50dp"
+            android:layout_marginVertical="7dp"
             android:layout_marginStart="10dp"
             android:layout_weight="80"
             android:background="@drawable/shape_edit"
-            android:layout_marginVertical="7dp"
             android:hint="메시지를 입력하세요"
-            android:paddingStart="10dp"/>
+            android:paddingStart="10dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_send_message"
@@ -127,8 +127,8 @@
             android:layout_marginEnd="10dp"
             android:layout_weight="20"
             android:text="전송"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

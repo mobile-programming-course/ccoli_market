@@ -15,12 +15,8 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
     inner class ViewHolder(private val binding: ItemRecyclerviewBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(articleModel: ArticleModel) {
-            val format = SimpleDateFormat("MM월 dd일")
-            val date = Date(articleModel.createdAt)
-
             binding.listTitle.text = articleModel.title
-//            binding.listAddress.text = format.format(date).toString()
-            binding.listAddress.text = ""
+            binding.listStatus.text = articleModel.status
             binding.listPrice.text = articleModel.price
 
             if (articleModel.imageUrl.isNotEmpty()) {
