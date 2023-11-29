@@ -25,20 +25,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/detail_image_size"
                 android:scaleType="centerCrop"
-                android:src="@drawable/sample8"
+                android:src="@drawable/colli_icon2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/iv_item_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
+                android:elevation="101dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:elevation="101dp"
                 app:srcCompat="@drawable/baseline_more_vert_24" />
 
             <ImageView
@@ -53,23 +53,22 @@
 
             <ImageView
                 android:id="@+id/profileImage"
-                android:layout_width="30dp"
-                android:layout_height="40dp"
-                android:src="@drawable/user"
-                app:layout_constraintBottom_toBottomOf="@+id/profileBg"
-                app:layout_constraintEnd_toEndOf="@+id/profileBg"
-                app:layout_constraintStart_toStartOf="@+id/profileBg"
-                app:layout_constraintTop_toTopOf="@+id/profileBg"
-                app:tint="@color/white" />
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/colli_icon2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detailImage" />
 
             <TextView
                 android:id="@+id/nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/layout_margin"
+                android:layout_marginStart="14dp"
                 android:layout_marginTop="20dp"
                 android:text="nickname"
-                android:textSize="17dp"
+                android:textSize="18dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/profileBg"
                 app:layout_constraintTop_toBottomOf="@+id/detailImage" />
@@ -78,7 +77,7 @@
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="14dp"
                 android:layout_marginBottom="4dp"
                 android:text="판매중"
                 app:layout_constraintBottom_toBottomOf="@+id/profileBg"
@@ -135,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/layout_margin"
                 android:text="detailTitle"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
@@ -153,16 +152,37 @@
 
             <ImageButton
                 android:id="@+id/backButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/previous"
+                android:backgroundTint="@color/purple_500"
                 android:contentDescription="뒤로가기"
+                android:elevation="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:backgroundTint="@color/black"
-                android:background="@drawable/previous"
-                android:elevation="10dp"/>
+                app:srcCompat="@drawable/button2" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/button2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -179,8 +199,8 @@
             android:id="@+id/detailLikeIcon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginStart="@dimen/layout_margin"
-            android:layout_marginBottom="25dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/love_empty"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -200,7 +220,7 @@
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
             android:text="000,000원"
             android:textSize="22dp"
@@ -212,15 +232,15 @@
             android:id="@+id/messagebutton"
             android:layout_width="100dp"
             android:layout_height="35dp"
-            android:layout_marginRight="@dimen/layout_margin"
-            android:layout_marginBottom="@dimen/layout_margin"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/button"
-            android:text="채팅하기"
             android:contentDescription="채팅하기"
+            android:stateListAnimator="@null"
+            android:text="채팅하기"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:stateListAnimator="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
