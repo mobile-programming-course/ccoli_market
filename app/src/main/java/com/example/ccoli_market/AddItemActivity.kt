@@ -79,12 +79,13 @@ class AddItemActivity() : AppCompatActivity() {
             val price = findViewById<EditText>(R.id.et_price).text.toString()
             val content = findViewById<EditText>(R.id.et_content).text.toString()
             val sellerId = auth.currentUser?.uid.orEmpty()
+            val userEmail = auth.currentUser?.email.orEmpty()
             if (selectedUri != null) {
                 val photoUri = selectedUri ?: return@setOnClickListener
                 uploadPhoto(
                     photoUri,
                     successHandler = { uri ->
-                        uploadArticle(sellerId, title, price, uri, content,"판매중")
+                        uploadArticle(sellerId,userEmail, title, price, uri, content,"판매중")
                         finish()
                     },
                     errorHandler = {
@@ -92,7 +93,7 @@ class AddItemActivity() : AppCompatActivity() {
                     }
                 )
             } else {
-                uploadArticle(sellerId, title, price, "",content,"판매중")
+                uploadArticle(sellerId,userEmail, title, price, "",content,"판매중")
                 finish()
             }
 
@@ -117,8 +118,8 @@ class AddItemActivity() : AppCompatActivity() {
                 }
             }
     }
-    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String, content:String,status:String) {
-        val model = ArticleModel(null,sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl,content,status)
+    private fun uploadArticle(sellerId: String,userEmail:String, title: String, price: String, imageUrl: String, content:String,status:String) {
+        val model = ArticleModel(null,sellerId,userEmail, title, System.currentTimeMillis(), "$price 원", imageUrl,content,status)
         //articleDB.push().setValue(model)
         val newRef = articleDB.push()
         newRef.setValue(model.copy(articleModelId = newRef.key))

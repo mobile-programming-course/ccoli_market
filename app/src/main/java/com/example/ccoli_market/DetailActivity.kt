@@ -49,6 +49,7 @@ class DetailActivity : AppCompatActivity() {
         sellerId = intent.getStringExtra("sellerId") ?: ""
 
         val sellerId = intent.getStringExtra("sellerId")
+        val userEmail=intent.getStringExtra("userEmail")
         val title = intent.getStringExtra("title")
         val price = intent.getStringExtra("price")
         val content = intent.getStringExtra("content")
@@ -57,7 +58,7 @@ class DetailActivity : AppCompatActivity() {
         Picasso.get().load(imageUrl).into(binding.detailImage)
         articleDB = FirebaseDatabase.getInstance().getReference("Articles")
 
-        binding.nickname.text = sellerId
+        binding.nickname.text = userEmail
         binding.detailTitle.text = title
         binding.detailContent.text = content
         binding.price.text = price
