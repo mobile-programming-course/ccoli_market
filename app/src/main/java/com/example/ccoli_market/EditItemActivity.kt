@@ -12,18 +12,25 @@ import androidx.fragment.app.Fragment
 import com.example.ccoli_market.databinding.ActivityEditItemBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
 
 class EditItemActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditItemBinding
     private lateinit var articleDB: DatabaseReference
     private lateinit var articleModelId: String
+    private var originalImageUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        // 기존의 이미지 URL을 가져와서 저장
+        originalImageUrl = intent.getStringExtra("imageUrl")
+        val imageUrl = intent.getStringExtra("imageUrl")
 
+        // 기존의 이미지를 표시
+        Picasso.get().load(imageUrl).into(binding.editImage)
         // Firebase 데이터베이스 레퍼런스 설정
         articleDB = FirebaseDatabase.getInstance().getReference("Articles")
 
@@ -39,8 +46,7 @@ class EditItemActivity : AppCompatActivity() {
             val editedTitle = binding.editTitle.text.toString()
             val editedPrice = binding.editPrice.text.toString()
             val editedContent = binding.editContent.text.toString()
-//            var editedstatus="판매중"
-            val checkedRadioButtonId=binding.radiogroup.checkedRadioButtonId
+            val checkedRadioButtonId = binding.radiogroup.checkedRadioButtonId
             val editedStatus = when (checkedRadioButtonId) {
                 R.id.radioButton -> "판매중"
                 R.id.radioButton2 -> "판매완료"
@@ -60,18 +66,11 @@ class EditItemActivity : AppCompatActivity() {
 
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-//            replaceFragment(HomeFragment())
             // 화면 종료
             finish()
-
         }
     }
-//    private fun replaceFragment(fragment: Fragment) {
-//        val transaction = supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.fragmentContainer, fragment) // R.id.fragmentContainer는 프래그먼트를 표시할 레이아웃의 ID입니다.
-//        transaction.addToBackStack(null) // 백스택에 추가하여 뒤로 가기 버튼으로 되돌릴 수 있도록 합니다.
-//        transaction.commit()
-//    }
+
     private fun loadArticleDetails(articleModelId: String) {
         // Firebase에서 기존 게시글의 내용 불러오기
         // 이 부분은 실제 데이터베이스의 구조에 따라 수정이 필요할 수 있습니다.
