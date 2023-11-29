@@ -53,7 +53,7 @@ class ChattingRoomActivity : AppCompatActivity() {
 
         // 정보 담기
         //receiverName = intent.getStringExtra("name").toString() //상대방 이름
-        receiverName = intent.getStringExtra("sellerId").toString() //상대방 이름
+        receiverName = intent.getStringExtra("name").toString() //상대방 이름
         receivedUid = intent.getStringExtra("uId").toString() //상대방 uId
 
         // 접속자 UID
@@ -66,10 +66,10 @@ class ChattingRoomActivity : AppCompatActivity() {
         //=> 위 값을 활용하여 채팅을 보내면 2개의 방에 각각 데이터 삽입
 
 
-        binding.tvReceiverName.text = receiverName //상대방 이름 상단에 띄우기
+        binding.nickname.text = receiverName //상대방 이름 상단에 띄우기
 
         //뒤로가기 버튼 구현
-        binding.ivBack.setOnClickListener {
+        binding.backButton.setOnClickListener {
             finish() //엑티비티 종료
         }
 
@@ -84,7 +84,7 @@ class ChattingRoomActivity : AppCompatActivity() {
                 .setValue(messageObject).addOnSuccessListener { // 보낸 메시지 DB에 삽입
                     //삽입 성공시
                     //데이터 저장 : 받는 쪽 대화방
-                    database.child("chats").child(receiverRoom).child("messages").push()
+                    database.child("chats").child(receiverRoom).child("remessages").push()
                         .setValue(messageObject)
                 }
             binding.etMessage.setText("") //초기화
@@ -94,7 +94,7 @@ class ChattingRoomActivity : AppCompatActivity() {
         messageList = ArrayList()
 
         //채팅목록 리사이클러뷰 초기화
-        messageRecyclerView = binding.recyclerviewChatting
+        messageRecyclerView = binding.recyclerView
         messageRecyclerViewAdapter = MessageAdapter(messageList) // 어댑터 생성
         messageRecyclerView.layoutManager = LinearLayoutManager(this) //레이아웃 설정
         messageRecyclerView.adapter = messageRecyclerViewAdapter // 어댑터 부착
