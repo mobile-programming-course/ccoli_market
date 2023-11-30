@@ -110,6 +110,7 @@ class DetailActivity : AppCompatActivity() {
             chatIntent.putExtra("userEmail", userEmail)
             chatIntent.putExtra("title", title)
             chatIntent.putExtra("price", price)
+            chatIntent.putExtra("articleModelId", articleModelId) //articleModelId
             chatIntent.putExtra("imageUrl", imageUrl)
             startActivity(chatIntent)
         }

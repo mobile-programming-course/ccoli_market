@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccoli_market.recyclerview.MessageAdapter
 import com.example.ccoli_market.databinding.ActivityChattingRoomBinding
+import com.example.ccoli_market.recyclerview.ChattingRoomItem
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -49,6 +50,9 @@ class ChattingRoomActivity : AppCompatActivity() {
         binding = ActivityChattingRoomBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+/*        val chatRoom = intent.getSerializableExtra("chatRoom") as ChattingRoomItem
+        receiverName = chatRoom.chatUserName // 상대방 이름*/
+
         //Firebase init
         auth = Firebase.auth
         database = Firebase.database.reference
@@ -61,11 +65,12 @@ class ChattingRoomActivity : AppCompatActivity() {
 
         // 접속자 UID
         val senderUid = auth.currentUser?.uid
+        val articleModelId = intent.getStringExtra("articleModelId")
 
         // 보내는쪽 대화방 ID 설정
-        senderRoom = receivedUid + senderUid
+        senderRoom = receivedUid + senderUid + articleModelId
         // 받는쪽 대화방 ID 설정
-        receiverRoom = senderUid + receivedUid
+        receiverRoom = senderUid + receivedUid + articleModelId
         //=> 위 값을 활용하여 채팅을 보내면 2개의 방에 각각 데이터 삽입
 
 
