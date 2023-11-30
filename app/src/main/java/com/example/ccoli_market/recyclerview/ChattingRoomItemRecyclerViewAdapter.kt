@@ -16,8 +16,12 @@ import com.example.ccoli_market.ChattingRoomActivity
 // 4.아이템을 유지/관리하는 Adapter
 class ChattingRoomItemRecyclerViewAdapter(var context: Context) : //화면에 데이터를 붙이기 위해 context가 필요함
     RecyclerView.Adapter<ChattingRoomItemRecyclerViewAdapter.ViewHolder>() { //리사이클러뷰 어댑터를 상속, Generic 값으로 innerClass인 ViewHolder를 넣어줘야함
+    private var chattingRoomItems: List<ChattingRoomItem> = emptyList()
 
-    private var chattingRoomItems: List<ChattingRoomItem> = emptyList() //화면에 보여줄 데이터들
+    fun setChattingRoomItem(items: List<ChattingRoomItem>) {
+        this.chattingRoomItems = items
+        notifyDataSetChanged()
+    }
 
 //    val predefinedColors = listOf(
 //        Color.parseColor("#FFC107"), // Amber
@@ -59,15 +63,10 @@ class ChattingRoomItemRecyclerViewAdapter(var context: Context) : //화면에 �
     }
 
 
-    fun setChattingRoomItem(items: List<ChattingRoomItem>) {
-        this.chattingRoomItems = items
-        notifyDataSetChanged()
-    }
-
     //(3)
     //itemView에 Array<ChattingRoomItem>의 값을 할당함
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentUser : ChattingRoomItem = chattingRoomItems[position]
+        val currentUser: ChattingRoomItem = chattingRoomItems[position]
 //        holder.chatItemImage
         holder.chatUserName.text = currentUser.chatUserName
         holder.lastChat.text = currentUser.lastChat
@@ -78,13 +77,10 @@ class ChattingRoomItemRecyclerViewAdapter(var context: Context) : //화면에 �
         // 채팅방으로 이동하는 부분
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChattingRoomActivity::class.java)
-            // 상대방의 UID와 이름을 intent에 담아서 이동
-            intent.putExtra("name",currentUser.chatUserName) //name
-            intent.putExtra("uId",currentUser.userId) //uId
-            context.startActivity(intent) // 채팅방으로 이동
+            intent.putExtra("chatRoom", chattingRoomItems[position]) // 채팅방 정보 전달
+            context.startActivity(intent)
         }
     }
-
 
     //리사이클러뷰의 아이템의 개수가 총 몇개인지를 리턴
     override fun getItemCount(): Int {

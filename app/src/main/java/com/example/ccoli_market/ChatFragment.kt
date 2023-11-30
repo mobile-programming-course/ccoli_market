@@ -73,6 +73,7 @@ class ChatFragment : Fragment() {
         })
 
         setAdapter() //어댑터 붙이기
+        //chatViewModel.addChatRoom(R.drawable.colli_icon2,"Chat Room 1", "Last Message", "User123")
 
         return binding.root
     }
