@@ -98,7 +98,7 @@ class ChattingRoomActivity : AppCompatActivity() {
                 .setValue(messageObject).addOnSuccessListener { // 보낸 메시지 DB에 삽입
                     //삽입 성공시
                     //데이터 저장 : 받는 쪽 대화방
-                    database.child("chats").child(receiverRoom).child("remessages").push()
+                    database.child("chats").child(receiverRoom).child("messages").push()
                         .setValue(messageObject)
                 }
             binding.etMessage.setText("") //초기화
@@ -130,7 +130,7 @@ class ChattingRoomActivity : AppCompatActivity() {
 
                 // 오류 발생시
                 override fun onCancelled(error: DatabaseError) {
-                    Log.d("firebae","error : chattingRoom error")
+                    Log.d("firebase","error : chattingRoom error")
                 }
             })
 

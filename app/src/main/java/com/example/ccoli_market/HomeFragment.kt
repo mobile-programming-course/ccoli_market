@@ -89,22 +89,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             if (auth.currentUser != null){
                 // todo 로그인을 한 상태
 
-                val chatRoom = ChatListItem(
-                    buyerId = auth.currentUser!!.uid,
-                    sellerId = articleModel.sellerId,
-                    itemTitle = articleModel.title,
-                    key = System.currentTimeMillis()
-                )
-
-                userDB.child(auth.currentUser!!.uid)
-                    .child(CHILD_CHAT)
-                    .push()
-                    .setValue(chatRoom)
-
-                userDB.child(articleModel.sellerId)
-                    .child(CHILD_CHAT)
-                    .push()
-                    .setValue(chatRoom)
+//                val chatRoom = ChatListItem(
+//                    buyerId = auth.currentUser!!.uid,
+//                    sellerId = articleModel.sellerId,
+//                    itemTitle = articleModel.title,
+//                    key = System.currentTimeMillis()
+//                )
+//
+//                userDB.child(auth.currentUser!!.uid)
+//                    .child(CHILD_CHAT)
+//                    .push()
+//                    .setValue(chatRoom)
+//
+//                userDB.child(articleModel.sellerId)
+//                    .child(CHILD_CHAT)
+//                    .push()
+//                    .setValue(chatRoom)
 
                 val intent = Intent(requireContext(), DetailActivity::class.java).apply {
                     putExtra("articleModelId", articleModel.articleModelId)
