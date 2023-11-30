@@ -30,16 +30,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var articleDB: DatabaseReference
     private lateinit var userDB: DatabaseReference
 
-    private var statusFilter: String = "전체"
-    private val spinnerItems = listOf("전체", "판매중", "판매완료")
+    private var statusFilter: String = ""
+    val defaultValue = ""
 
-    private val articleList = mutableListOf<ArticleModel>()
+    private val spinnerItems = listOf("필터링", "전체", "판매중", "판매완료")
+
+    private val  articleList = mutableListOf<ArticleModel>()
     private val listener = object : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
 
             val articleModel = snapshot.getValue(ArticleModel::class.java)
             articleModel ?: return
-
             articleList.add(articleModel)
             articleAdapter.submitList(articleList)
 
@@ -60,12 +61,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val fragmentHomeBinding = FragmentHomeBinding.bind(view)
         binding = fragmentHomeBinding
 
-        articleList.clear()
-
 
         val spinner = fragmentHomeBinding.spinner
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, spinnerItems)
         spinner.adapter = spinnerAdapter
+
+        spinner.setSelection(spinnerItems.indexOf(""))
 
         // Spinner 아이템 선택 리스너 설정
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -76,9 +77,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // 아무것도 선택되지 않았을 때의 동작 (필요에 따라 구현)
-            }
+                statusFilter = defaultValue
+                filterData()         }
         }
+        spinner.setSelection(spinnerItems.indexOf(defaultValue))
 
 
         articleDB = Firebase.database.reference.child(DB_ARTICLES)
@@ -125,7 +127,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         } )
 
-        
+
 
         fragmentHomeBinding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         fragmentHomeBinding.articleRecyclerView.adapter = articleAdapter
@@ -145,14 +147,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun filterData() {
         // 선택된 아이템에 따라 데이터를 필터링하여 새로운 리스트 생성
         val filteredList = when (statusFilter) {
-            "전체" -> articleList // 전체인 경우, 원본 리스트 반환
+            "필터링" -> articleList.filter{it.status == "" && it.status == ""}
             "판매중" -> articleList.filter { it.status == "판매중" }
             "판매완료" -> articleList.filter { it.status == "판매완료" }
-            else -> articleList // 기본적으로 전체 반환
+            "전체" -> articleList
+
+            else ->  articleList// 기본적으로 전체 반환
         }
 
         // 필터링된 리스트를 어댑터에 전달하여 업데이트
         articleAdapter.submitList(filteredList)
+        // 어댑터에게 데이터가 변경되었음을 알림
+        articleAdapter.notifyDataSetChanged()
+
     }
 
     override fun onResume() {

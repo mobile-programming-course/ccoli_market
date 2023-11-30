@@ -42,11 +42,8 @@ class MainActivity : AppCompatActivity() {
 
     // FrameLayout에 선택된 Fragment를 attach하는 메소드
     private fun replaceFragment(fragment: Fragment) {
-
         supportFragmentManager.beginTransaction()
-            .apply {
-                replace(R.id.fragmentContainer, fragment)
-                commit()
-            }
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()  // commit 함수 호출
     }
 }
