@@ -8,4 +8,9 @@ data class ChattingRoomItem(
     var chatUserName : String, //상대방 이름
     val lastChat : String, //마지막 채팅
     val userId: String // 상대방의 uId
+<<<<<<< Updated upstream
 ): Serializable
+=======
+
+)
+>>>>>>> Stashed changes
