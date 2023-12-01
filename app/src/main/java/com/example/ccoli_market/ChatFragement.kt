@@ -58,19 +58,13 @@ class ChatFragment : Fragment() {
                 }
                 override fun onDataChange(snapshot: DataSnapshot) {
                     chatModel.clear()
-                    destinationUsers.clear()  // 리스트 초기화
                     for(data in snapshot.children){
-                        val model = data.getValue<ChatModel>()!!
-                        model.chatRoomUid = data.key  // 채팅방의 chatRoomUid를 가져옴
-                        chatModel.add(model)
-                        for (user in model.users.keys) {
-                            if (!user.equals(uid)) {
-                                destinationUsers.add(user)  // destinationUid를 리스트에 추가
-                            }
-                        }
+                        chatModel.add(data.getValue<ChatModel>()!!)
+                        println(data)
                     }
                     notifyDataSetChanged()
                 }
+
             })
 
         }
@@ -90,15 +84,16 @@ class ChatFragment : Fragment() {
                 if (!user.equals(uid)) {
                     destinationUid = user
                     destinationUsers.add(destinationUid)
-
                 }
             }
-
             fireDatabase.child("users").child("$destinationUid").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                 }
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val friend = snapshot.getValue<User>()
+//                    Glide.with(holder.itemView.context).load(friend?.profileImageUrl)
+//                        .apply(RequestOptions().circleCrop())
+//                        .into(holder.imageView)
                     holder.titletv.text = friend?.name
                 }
             })
@@ -112,10 +107,10 @@ class ChatFragment : Fragment() {
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, MessageActivity::class.java)
                 intent.putExtra("destinationUid", destinationUsers[position])
+                Log.d("title",chatModel[position].title.toString())
                 intent.putExtra("title", chatModel[position].title)
                 intent.putExtra("price", chatModel[position].price)
                 intent.putExtra("imageUrl", chatModel[position].imageUrl)
-                intent.putExtra("chatRoomUid", chatModel[position].chatRoomUid)
                 context?.startActivity(intent)
             }
         }
