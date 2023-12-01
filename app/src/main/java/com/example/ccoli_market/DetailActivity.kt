@@ -34,7 +34,6 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var sellerId : String
     private lateinit var currentUserid : String //현재 유저의 id
     private lateinit var articleModelId : String //판매 상품의 id값
-
     private lateinit var articleDB : DatabaseReference
     companion object {
         const val EDIT_ITEM_REQUEST_CODE = 1001
@@ -47,7 +46,6 @@ class DetailActivity : AppCompatActivity() {
 
         articleModelId = intent.getStringExtra("articleModelId")!!
         sellerId = intent.getStringExtra("sellerId") ?: ""
-
         val sellerId = intent.getStringExtra("sellerId")
         val userEmail=intent.getStringExtra("userEmail")
         val title = intent.getStringExtra("title")
@@ -89,7 +87,7 @@ class DetailActivity : AppCompatActivity() {
             findViewById<Button>(R.id.messagebutton).setOnClickListener {
                 // 판매자가 자신의 상품이 아닌 경우에만 동작
                 if (auth.currentUser != null && auth.currentUser!!.uid != sellerId) {
-                    val chatIntent = Intent(this, ChattingRoomActivity::class.java)
+                    val chatIntent = Intent(this, MessageActivity::class.java)
                     startActivity(chatIntent)
                 } else {
                     showToast("내가 올린 상품입니다.")
@@ -106,12 +104,13 @@ class DetailActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.messagebutton).setOnClickListener {
-            val chatIntent = Intent(this, ChattingRoomActivity::class.java)
+            val chatIntent = Intent(this, MessageActivity::class.java)
             chatIntent.putExtra("userEmail", userEmail)
             chatIntent.putExtra("title", title)
             chatIntent.putExtra("price", price)
             chatIntent.putExtra("articleModelId", articleModelId) //articleModelId
             chatIntent.putExtra("imageUrl", imageUrl)
+            chatIntent.putExtra("destinationUid", sellerId)
             startActivity(chatIntent)
         }
         binding.backButton.setOnClickListener {

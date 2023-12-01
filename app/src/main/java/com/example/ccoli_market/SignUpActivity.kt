@@ -35,7 +35,6 @@ class SignUpActivity : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.sign_up_password).text
         val name = findViewById<EditText>(R.id.editTextName).text
         val button = findViewById<Button>(R.id.sign_up_page_btn)
-        var profileCheck = false
 
         val intent = Intent(this, LoginActivity::class.java)
 
