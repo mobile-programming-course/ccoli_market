@@ -112,7 +112,6 @@ class DetailActivity : AppCompatActivity() {
             chatIntent.putExtra("price", price)
             chatIntent.putExtra("articleModelId", articleModelId) //articleModelId
             chatIntent.putExtra("imageUrl", imageUrl)
-            chatIntent.putExtra("destinationUid", friend[position].uid)
             startActivity(chatIntent)
         }
         binding.backButton.setOnClickListener {
