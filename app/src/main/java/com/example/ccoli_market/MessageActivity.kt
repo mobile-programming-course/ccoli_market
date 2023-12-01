@@ -141,33 +141,33 @@ class MessageActivity:AppCompatActivity() {
         @SuppressLint("RtlHardcoded")
         override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
 //            holder.textView_message.textSize = 20F
-            holder.textView_message.text = comments[position].message
+            holder.tvmessage.text = comments[position].message
 //            holder.textView_time.text = comments[position].time
             if(comments[position].uid.equals(uid)){ // 본인 채팅
 //                holder.textView_message.setBackgroundResource(R.drawable.rightbubble)
-                holder.textView_name.visibility = View.INVISIBLE
-                holder.layout_destination.visibility = View.INVISIBLE
-                holder.layout_main.gravity = Gravity.RIGHT
+                holder.tvname.visibility = View.INVISIBLE
+                holder.layoutdestination.visibility = View.INVISIBLE
+                holder.layoutmain.gravity = Gravity.RIGHT
             }else{ // 상대방 채팅
 //                Glide.with(holder.itemView.context)
 //                    .load(friend?.profileImageUrl)
 //                    .apply(RequestOptions().circleCrop())
 //                    .into(holder.imageView_profile)
-                holder.textView_name.text = friend?.email
-                holder.layout_destination.visibility = View.VISIBLE
-                holder.textView_name.visibility = View.VISIBLE
+                holder.tvname.text = friend?.email
+                holder.layoutdestination.visibility = View.VISIBLE
+                holder.tvname.visibility = View.VISIBLE
 //                holder.textView_message.setBackgroundResource(R.drawable.leftbubble)
-                holder.layout_main.gravity = Gravity.LEFT
+                holder.layoutmain.gravity = Gravity.LEFT
             }
         }
 
         inner class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val textView_message:TextView=view.findViewById(R.id.messageItem_textView_message)
-            val textView_name: TextView = view.findViewById(R.id.messageItem_textview_name)
+            val tvmessage:TextView=view.findViewById(R.id.messageItem_textView_message)
+            val tvname: TextView = view.findViewById(R.id.messageItem_textview_name)
 //            val imageView_profile: ImageView = view.findViewById(R.id.messageItem_imageview_profile)
-            val layout_destination: LinearLayout = view.findViewById(R.id.messageItem_layout_destination)
-            val layout_main: LinearLayout = view.findViewById(R.id.messageItem_linearlayout_main)
-//            val textView_time : TextView = view.findViewById(R.id.messageItem_textView_time)
+            val layoutdestination: LinearLayout = view.findViewById(R.id.messageItem_layout_destination)
+            val layoutmain: LinearLayout = view.findViewById(R.id.messageItem_linearlayout_main)
+            val textView_time : TextView = view.findViewById(R.id.messageItem_textView_time)
         }
 
         override fun getItemCount(): Int {
