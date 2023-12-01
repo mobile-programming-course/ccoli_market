@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,7 +52,6 @@ class ChatFragment : Fragment() {
         init {
             uid = Firebase.auth.currentUser?.uid.toString()
             println(uid)
-
             fireDatabase.child("chatrooms").orderByChild("users/$uid").equalTo(true).addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(error: DatabaseError) {
                 }
@@ -95,7 +93,7 @@ class ChatFragment : Fragment() {
 //                    Glide.with(holder.itemView.context).load(friend?.profileImageUrl)
 //                        .apply(RequestOptions().circleCrop())
 //                        .into(holder.imageView)
-                    holder.titletv.text = friend?.email
+                    holder.titletv.text = friend?.name
                 }
             })
             //메세지 내림차순 정렬 후 마지막 메세지의 키값을 가져

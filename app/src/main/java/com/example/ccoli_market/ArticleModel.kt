@@ -16,7 +16,6 @@ data class ArticleModel(
     val content: String,
     val status:String,
     val uri: String? = null
-
 )
 {
     constructor(): this("","","","",0,"","","","","")
