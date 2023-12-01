@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ccoli_market.R
-import com.example.ccoli_market.ChattingRoomActivity
+import com.example.ccoli_market.MessageActivity
 
 // 4.아이템을 유지/관리하는 Adapter
 class ChattingRoomItemRecyclerViewAdapter(var context: Context) : //화면에 데이터를 붙이기 위해 context가 필요함
@@ -76,7 +76,7 @@ class ChattingRoomItemRecyclerViewAdapter(var context: Context) : //화면에 �
         // 아이템 클릭시 이벤트
         // 채팅방으로 이동하는 부분
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, ChattingRoomActivity::class.java)
+            val intent = Intent(context, MessageActivity::class.java)
             intent.putExtra("chatRoom", chattingRoomItems[position]) // 채팅방 정보 전달
             context.startActivity(intent)
         }

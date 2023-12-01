@@ -68,12 +68,11 @@ class ChatFragment : Fragment() {
         addChildFirebaseListener() //리스너 부착
 
         // LiveData Observer 설정
-        chatViewModel.chattingRoomItemsLiveData.observe(viewLifecycleOwner, Observer { items ->
-            recyclerViewChattingItemAdapter.setChattingRoomItem(items)
-        })
+//        chatViewModel.chattingRoomItemsLiveData.observe(viewLifecycleOwner, Observer { items ->
+//            recyclerViewChattingItemAdapter.setChattingRoomItem(items)
+//        })
 
         setAdapter() //어댑터 붙이기
-        //chatViewModel.addChatRoom(R.drawable.colli_icon2,"Chat Room 1", "Last Message", "User123")
 
         return binding.root
     }
@@ -125,6 +124,10 @@ class ChatFragment : Fragment() {
         recyclerViewChattingItem.layoutManager = LinearLayoutManager(this.context)
         recyclerViewChattingItemAdapter = activity?.let { ChattingRoomItemRecyclerViewAdapter(it) }!!
         recyclerViewChattingItem.adapter = recyclerViewChattingItemAdapter
+        // LiveData Observer 설정
+        chatViewModel.chattingRoomItemsLiveData.observe(viewLifecycleOwner, Observer { items ->
+            recyclerViewChattingItemAdapter.setChattingRoomItem(items)
+        })
     }
 
 

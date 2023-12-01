@@ -19,7 +19,7 @@ data class ArticleModel(
 
 )
 {
-    constructor(): this("","","","",0,"","","","")
+    constructor(): this("","","","",0,"","","","","")
 
     companion object {
         val Articles = mutableListOf<ArticleModel>()
