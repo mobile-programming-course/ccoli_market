@@ -29,8 +29,6 @@ class MessageActivity:AppCompatActivity() {
     private var uid: String? = null
     private var recyclerView: RecyclerView? = null
     private lateinit var sendbtn: Button
-    private var articleModelId: String? = null
-
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +43,6 @@ class MessageActivity:AppCompatActivity() {
         val title = intent.getStringExtra("title")
         val price = intent.getStringExtra("price")
         val imageUrl = intent.getStringExtra("imageUrl")
-        articleModelId = intent.getStringExtra("articleModelId")
-        chatRoomUid = intent.getStringExtra("chatRoomUid")
 
         findViewById<ImageButton>(R.id.chatBackButton).setOnClickListener {
             onBackPressed()
@@ -61,45 +57,47 @@ class MessageActivity:AppCompatActivity() {
         destinationUid = intent.getStringExtra("destinationUid")
         uid = Firebase.auth.currentUser?.uid.toString()
         recyclerView = findViewById(R.id.recyclerView)
-
         sendbtn.setOnClickListener {
+            Log.d("클릭 시 dest", "$destinationUid")
+            val chatModel = ChatModel()
+            chatModel.users[uid.toString()] = true
+            chatModel.users[destinationUid.toString()] = true//보낸사람uid
+
             val comment = ChatModel.Comment(uid, editText.text.toString(), curTime)
-
             if (chatRoomUid == null) {
-                val chatModel = ChatModel()
-                chatModel.users[uid.toString()] = true
-                chatModel.users[destinationUid.toString()] = true
-                chatModel.articleModelId = articleModelId
-
-                // 채팅방의 고유 아이디 생성
-                val chatRoomRef = fireDatabase.child("chatrooms").push()
-                chatRoomUid = chatRoomRef.key
-                chatModel.chatRoomUid = chatRoomUid  // 채팅방의 chatRoomUid를 설정
-
-                chatRoomRef.setValue(chatModel).addOnSuccessListener {
-                    // 메시지 보내기
-                    chatRoomRef.child("comments").push().setValue(comment)
-                    editText.text = null
+                sendbtn.isEnabled = false
+                fireDatabase.child("chatrooms").push().setValue(chatModel).addOnSuccessListener {
+                    //채팅방 생성
+                    checkChatRoom()
+                    //메세지 보내기
+                    Handler().postDelayed({
+                        println(chatRoomUid)
+                        fireDatabase.child("chatrooms").child(chatRoomUid.toString())
+                            .child("comments").push().setValue(comment)
+                        editText.text = null
+                    }, 1000L)
+                    Log.d("chatUidNull dest", "$destinationUid")
                 }
             } else {
-                fireDatabase.child("chatrooms").child(chatRoomUid!!)
-                    .child("comments").push().setValue(comment)
+                fireDatabase.child("chatrooms").child(chatRoomUid.toString()).child("comments")
+                    .push().setValue(comment)
                 editText.text = null
+                Log.d("chatUidNotNull dest", "$destinationUid")
             }
         }
-
         checkChatRoom()
         //뒤로가기 버튼 구현
     }//onCreate
     private fun checkChatRoom() {
-        fireDatabase.child("chatrooms").orderByChild("articleModelId").equalTo(articleModelId)
+        fireDatabase.child("chatrooms").orderByChild("users/$uid").equalTo(true)//chatrooms아래 users/uid값이 true이면
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                 }
-                override fun onDataChange(snapshot: DataSnapshot) {
+                override fun onDataChange(snapshot: DataSnapshot) {//데이터가 변경되었을때
                     for (item in snapshot.children) {
+                        println(item)
                         val chatModel = item.getValue<ChatModel>()
-                        if (chatModel?.users!!.containsKey(uid) && chatModel.users.containsKey(destinationUid)) {
+                        if (chatModel?.users!!.containsKey(destinationUid)) {
                             chatRoomUid = item.key
                             sendbtn.isEnabled = true
                             recyclerView?.layoutManager = LinearLayoutManager(this@MessageActivity)
@@ -109,7 +107,6 @@ class MessageActivity:AppCompatActivity() {
                 }
             })
     }
-
     inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.MessageViewHolder>() {
         private val comments = ArrayList<ChatModel.Comment>()
         private var friend : User? = null
