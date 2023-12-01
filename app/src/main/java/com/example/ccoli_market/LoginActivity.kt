@@ -1,5 +1,6 @@
 package com.example.ccoli_market
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -14,6 +15,15 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.start_page)
+
+        // Check if user is already signed in
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser != null) {
+            // User is already signed in
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+
         findViewById<Button>(R.id.sign_in_btn)?.setOnClickListener {
             val userEmail = findViewById<EditText>(R.id.sign_in_email)?.text.toString()
             val password = findViewById<EditText>(R.id.sign_in_password)?.text.toString()
@@ -26,14 +36,13 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun doLogin(userEmail: String, password: String) {
         Firebase.auth.signInWithEmailAndPassword(userEmail, password)
-            .addOnCompleteListener(this) { // it: Task<AuthResult!>
-                if (it.isSuccessful){
-                    Toast.makeText(this, userEmail +"님 환영합니다.", Toast.LENGTH_SHORT).show()
-                    startActivity(
-                        Intent(this, MainActivity::class.java)
-                    )
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful){
+                    // Sign in success, update UI with the signed-in user's information
+                    startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 } else {
+                    // If sign in fails, display a message to the user.
                     Toast.makeText(this, "로그인에 실패하셨습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
