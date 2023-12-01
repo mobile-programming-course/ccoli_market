@@ -81,6 +81,7 @@ class MessageActivity:AppCompatActivity() {
             }
         }
         checkChatRoom()
+        //뒤로가기 버튼 구현
     }//onCreate
     private fun checkChatRoom() {
         fireDatabase.child("chatrooms").orderByChild("users/$uid").equalTo(true)//chatrooms아래 users/uid값이 true이면
@@ -111,7 +112,7 @@ class MessageActivity:AppCompatActivity() {
                 }
                 override fun onDataChange(snapshot: DataSnapshot) {
                     friend = snapshot.getValue<User>()
-//                    nickname.text = friend?.email
+                    nickname.text = friend?.name
                     getMessageList()
                 }
             })
@@ -140,20 +141,24 @@ class MessageActivity:AppCompatActivity() {
         }
         @SuppressLint("RtlHardcoded")
         override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-//            holder.textView_message.textSize = 20F
+            holder.tvmessage.textSize = 20F
             holder.tvmessage.text = comments[position].message
-//            holder.textView_time.text = comments[position].time
+            holder.textView_time.text = comments[position].time
             if(comments[position].uid.equals(uid)){ // 본인 채팅
 //                holder.textView_message.setBackgroundResource(R.drawable.rightbubble)
                 holder.tvname.visibility = View.INVISIBLE
                 holder.layoutdestination.visibility = View.INVISIBLE
                 holder.layoutmain.gravity = Gravity.RIGHT
+                val params = holder.layoutmain.layoutParams as ViewGroup.MarginLayoutParams
+                val marginInDp = 50 // 마진을 16dp로 설정 (원하는 크기로 조절)
+                val marginInPx = (marginInDp * holder.itemView.context.resources.displayMetrics.density).toInt()
+                params.rightMargin = marginInPx
             }else{ // 상대방 채팅
 //                Glide.with(holder.itemView.context)
 //                    .load(friend?.profileImageUrl)
 //                    .apply(RequestOptions().circleCrop())
 //                    .into(holder.imageView_profile)
-                holder.tvname.text = friend?.email
+                holder.tvname.text = friend?.name
                 holder.layoutdestination.visibility = View.VISIBLE
                 holder.tvname.visibility = View.VISIBLE
 //                holder.textView_message.setBackgroundResource(R.drawable.leftbubble)
@@ -173,6 +178,5 @@ class MessageActivity:AppCompatActivity() {
         override fun getItemCount(): Int {
             return comments.size
         }
-
     }
 }
