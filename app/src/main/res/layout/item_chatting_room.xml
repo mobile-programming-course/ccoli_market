@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="90dp">
+    android:layout_height="90dp"
+    android:id="@+id/chat_list">
 
     <!--    이미지의 테두리를 둥글게 적용시키기 위해 cardview를 사용하였음-->
     <androidx.cardview.widget.CardView
@@ -15,6 +16,7 @@
         android:layout_marginBottom="10dp"
         app:cardCornerRadius="30dp"
         app:cardBackgroundColor="@color/white"
+        app:cardElevation="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
