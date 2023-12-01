@@ -146,16 +146,16 @@ class MessageActivity:AppCompatActivity() {
         }
         @SuppressLint("RtlHardcoded")
         override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-            holder.tvmessage.textSize = 20F
+            holder.tvmessage.textSize = 15F
             holder.tvmessage.text = comments[position].message
             holder.textView_time.text = comments[position].time
             if(comments[position].uid.equals(uid)){ // 본인 채팅
-//                holder.textView_message.setBackgroundResource(R.drawable.rightbubble)
+                holder.tvmessage.setBackgroundResource(R.drawable.rightbubble)
                 holder.tvname.visibility = View.INVISIBLE
                 holder.layoutdestination.visibility = View.INVISIBLE
                 holder.layoutmain.gravity = Gravity.RIGHT
                 val params = holder.layoutmain.layoutParams as ViewGroup.MarginLayoutParams
-                val marginInDp = 50 // 마진을 16dp로 설정 (원하는 크기로 조절)
+                val marginInDp = 25 // 오른쪽마진 (원하는 크기로 조절)
                 val marginInPx = (marginInDp * holder.itemView.context.resources.displayMetrics.density).toInt()
                 params.rightMargin = marginInPx
             }else{ // 상대방 채팅
@@ -164,9 +164,10 @@ class MessageActivity:AppCompatActivity() {
 //                    .apply(RequestOptions().circleCrop())
 //                    .into(holder.imageView_profile)
                 holder.tvname.text = friend?.name
+                //holder.tvname.text = friend?.name
                 holder.layoutdestination.visibility = View.VISIBLE
                 holder.tvname.visibility = View.VISIBLE
-//                holder.textView_message.setBackgroundResource(R.drawable.leftbubble)
+                holder.tvmessage.setBackgroundResource(R.drawable.leftbubble)
                 holder.layoutmain.gravity = Gravity.LEFT
             }
         }
@@ -174,7 +175,7 @@ class MessageActivity:AppCompatActivity() {
         inner class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val tvmessage:TextView=view.findViewById(R.id.messageItem_textView_message)
             val tvname: TextView = view.findViewById(R.id.messageItem_textview_name)
-//            val imageView_profile: ImageView = view.findViewById(R.id.messageItem_imageview_profile)
+            //val imageView_profile: ImageView = view.findViewById(R.id.profileImage)
             val layoutdestination: LinearLayout = view.findViewById(R.id.messageItem_layout_destination)
             val layoutmain: LinearLayout = view.findViewById(R.id.messageItem_linearlayout_main)
             val textView_time : TextView = view.findViewById(R.id.messageItem_textView_time)
