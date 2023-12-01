@@ -43,6 +43,10 @@ class MessageActivity:AppCompatActivity() {
         val price = intent.getStringExtra("price")
         val imageUrl = intent.getStringExtra("imageUrl")
 
+        findViewById<ImageButton>(R.id.chatBackButton).setOnClickListener {
+            onBackPressed()
+        }
+
         // 받아온 데이터를 각각의 TextView나 ImageView에 설정
         findViewById<TextView>(R.id.nickname).text = userEmail
         findViewById<TextView>(R.id.detailTitle).text = title

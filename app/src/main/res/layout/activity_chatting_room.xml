@@ -79,7 +79,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
-        android:id="@+id/backButton"
+        android:id="@+id/chatBackButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="10dp"
