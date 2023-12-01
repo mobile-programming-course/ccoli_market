@@ -3,6 +3,7 @@ package com.example.ccoli_market
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -106,6 +107,10 @@ class ChatFragment : Fragment() {
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, MessageActivity::class.java)
                 intent.putExtra("destinationUid", destinationUsers[position])
+                Log.d("title",chatModel[position].title.toString())
+                intent.putExtra("title", chatModel[position].title)
+                intent.putExtra("price", chatModel[position].price)
+                intent.putExtra("imageUrl", chatModel[position].imageUrl)
                 context?.startActivity(intent)
             }
         }
