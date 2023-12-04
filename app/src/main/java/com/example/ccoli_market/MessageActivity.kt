@@ -65,6 +65,29 @@ class MessageActivity:AppCompatActivity() {
 
             val comment = ChatModel.Comment(uid, editText.text.toString(), curTime)
             if (chatRoomUid == null) {
+                val chatModel = ChatModel()
+                chatModel.users[uid.toString()] = true
+                chatModel.users[destinationUid.toString()] = true
+                chatModel.articleModelId = articleModelId
+
+                // 채팅방의 고유 아이디 생성
+                val chatRoomRef = fireDatabase.child("chatrooms").push()
+                chatRoomUid = chatRoomRef.key
+                chatModel.chatRoomUid = chatRoomUid  // 채팅방의 chatRoomUid를 설정
+
+                chatRoomRef.setValue(chatModel).addOnSuccessListener {
+                    // 메시지 보내기
+                    chatRoomRef.child("comments").push().setValue(comment).addOnSuccessListener {
+                        editText.text = null
+                        initRecyclerViewAdapter()  // 새로운 메시지를 추가한 후 RecyclerView를 업데이트합니다.
+                    }
+                }
+            } else {
+                fireDatabase.child("chatrooms").child(chatRoomUid!!)
+                    .child("comments").push().setValue(comment).addOnSuccessListener {
+                        editText.text = null
+                        initRecyclerViewAdapter()  // 새로운 메시지를 추가한 후 RecyclerView를 업데이트합니다.
+                    }
                 sendbtn.isEnabled = false
                 fireDatabase.child("chatrooms").push().setValue(chatModel).addOnSuccessListener {
                     //채팅방 생성
@@ -86,10 +109,9 @@ class MessageActivity:AppCompatActivity() {
             }
         }
         checkChatRoom()
-        //뒤로가기 버튼 구현
-    }//onCreate
+    }
     private fun checkChatRoom() {
-        fireDatabase.child("chatrooms").orderByChild("users/$uid").equalTo(true)//chatrooms아래 users/uid값이 true이면
+        fireDatabase.child("chatrooms").orderByChild("users/$uid").equalTo(true)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                 }
@@ -97,15 +119,20 @@ class MessageActivity:AppCompatActivity() {
                     for (item in snapshot.children) {
                         println(item)
                         val chatModel = item.getValue<ChatModel>()
-                        if (chatModel?.users!!.containsKey(destinationUid)) {
+                        if (chatModel?.users!!.containsKey(uid) && chatModel.users.containsKey(destinationUid) && chatModel.articleModelId == articleModelId) {
                             chatRoomUid = item.key
                             sendbtn.isEnabled = true
-                            recyclerView?.layoutManager = LinearLayoutManager(this@MessageActivity)
-                            recyclerView?.adapter = RecyclerViewAdapter()
+                            initRecyclerViewAdapter()
+                            break  // 일치하는 첫 번째 채팅방을 찾으면 루프를 종료합니다.
                         }
                     }
                 }
             })
+    }
+    private fun initRecyclerViewAdapter() {
+        val recyclerViewAdapter = RecyclerViewAdapter()
+        recyclerView?.layoutManager = LinearLayoutManager(this@MessageActivity)
+        recyclerView?.adapter = recyclerViewAdapter
     }
     inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.MessageViewHolder>() {
         private val comments = ArrayList<ChatModel.Comment>()
@@ -123,23 +150,32 @@ class MessageActivity:AppCompatActivity() {
             })
         }
 
-        fun getMessageList(){
-            fireDatabase.child("chatrooms").child(chatRoomUid.toString()).child("comments").addValueEventListener(object : ValueEventListener{
-                override fun onCancelled(error: DatabaseError) {
-                }
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    comments.clear()
-                    for(data in snapshot.children){
-                        val item = data.getValue<ChatModel.Comment>()
-                        comments.add(item!!)
-                        println(comments)
+        fun getMessageList() {
+            fireDatabase.child("chatrooms")
+                .orderByChild("articleModelId").equalTo(articleModelId) // articleModelId를 이용한 필터링
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(error: DatabaseError) {
                     }
-                    notifyDataSetChanged()
-                    //메세지를 보낼 시 화면을 맨 밑으로 내림
-                    recyclerView?.scrollToPosition(comments.size - 1)
-                }
-            })
+
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        comments.clear()
+                        for (data in snapshot.children) {
+                            val chatModel = data.getValue<ChatModel>()
+                            if (chatModel?.chatRoomUid == chatRoomUid) { // chatRoomUid가 일치하는 데이터만 선택
+                                for (commentSnapshot in data.child("comments").children) {
+                                    val comment = commentSnapshot.getValue<ChatModel.Comment>()
+                                    comment?.let {
+                                        comments.add(it)
+                                    }
+                                }
+                            }
+                        }
+                        notifyDataSetChanged()
+                        recyclerView?.scrollToPosition(comments.size - 1)
+                    }
+                })
         }
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
             val view : View = LayoutInflater.from(parent.context).inflate(R.layout.item_message, parent, false)
             return MessageViewHolder(view)

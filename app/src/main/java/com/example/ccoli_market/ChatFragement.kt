@@ -59,6 +59,18 @@ class ChatFragment : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     chatModel.clear()
                     for(data in snapshot.children){
+                        println(data)
+                        val model = data.getValue<ChatModel>()!!
+                        model.chatRoomUid = data.key
+                        model?.let {
+                            fetchArticleData(it)
+                            chatModel.add(it)
+                        }
+                        for (user in model.users.keys) {
+                            if (!user.equals(uid)) {
+                                destinationUsers.add(user)
+                            }
+                        }
                         chatModel.add(data.getValue<ChatModel>()!!)
                         println(data)
                     }
@@ -67,6 +79,24 @@ class ChatFragment : Fragment() {
 
             })
 
+        }
+        private fun fetchArticleData(chatModel: ChatModel) {
+            fireDatabase.child("Articles").child(chatModel.articleModelId.toString())
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(articleSnapshot: DataSnapshot) {
+                        val article = articleSnapshot.getValue<ArticleModel>()
+                        article?.let {
+                            chatModel.title = it.title
+                            chatModel.price = it.price
+                            chatModel.imageUrl = it.imageUrl
+                        }
+                        notifyDataSetChanged()
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        // 에러 처리
+                        Log.e("Firebase Error", "Failed to retrieve article data: ${error.message}")
+                    }
+                })
         }
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
             return CustomViewHolder(LayoutInflater.from(context).inflate(R.layout.item_chatting_room, parent, false))
@@ -103,7 +133,7 @@ class ChatFragment : Fragment() {
             val lastMessageKey = commentMap.keys.toTypedArray()[0]
             holder.lastMessagetv.text = chatModel[position].comments[lastMessageKey]?.message
 
-            //채팅창 선책 시 이동
+            //채팅창 선택 시 이동
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, MessageActivity::class.java)
                 intent.putExtra("destinationUid", destinationUsers[position])
@@ -111,6 +141,8 @@ class ChatFragment : Fragment() {
                 intent.putExtra("title", chatModel[position].title)
                 intent.putExtra("price", chatModel[position].price)
                 intent.putExtra("imageUrl", chatModel[position].imageUrl)
+                intent.putExtra("chatRoomUid", chatModel[position].chatRoomUid)
+                intent.putExtra("articleModelId", chatModel[position].articleModelId) // 이 부분 추가
                 context?.startActivity(intent)
             }
         }
