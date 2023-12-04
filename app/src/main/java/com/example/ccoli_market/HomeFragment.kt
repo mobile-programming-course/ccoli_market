@@ -154,7 +154,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             "검색 필터" -> articleList.filter { it.status == "" }
             "판매중" -> articleList.filter { it.status == "판매중" }
             "판매완료" -> articleList.filter { it.status == "판매완료" }
-            "전체" -> articleList
+            "전체" -> articleList.toList()
             else -> articleList // 기본적으로 전체 반환
         }
 
