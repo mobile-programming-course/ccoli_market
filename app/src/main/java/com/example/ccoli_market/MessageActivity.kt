@@ -29,8 +29,6 @@ class MessageActivity:AppCompatActivity() {
     private var uid: String? = null
     private var recyclerView: RecyclerView? = null
     private lateinit var sendbtn: Button
-    private var articleModelId: String? = null
-
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +43,6 @@ class MessageActivity:AppCompatActivity() {
         val title = intent.getStringExtra("title")
         val price = intent.getStringExtra("price")
         val imageUrl = intent.getStringExtra("imageUrl")
-        articleModelId = intent.getStringExtra("articleModelId")
-        chatRoomUid = intent.getStringExtra("chatRoomUid")
 
         findViewById<ImageButton>(R.id.chatBackButton).setOnClickListener {
             onBackPressed()
@@ -61,10 +57,13 @@ class MessageActivity:AppCompatActivity() {
         destinationUid = intent.getStringExtra("destinationUid")
         uid = Firebase.auth.currentUser?.uid.toString()
         recyclerView = findViewById(R.id.recyclerView)
-
         sendbtn.setOnClickListener {
-            val comment = ChatModel.Comment(uid, editText.text.toString(), curTime)
+            Log.d("클릭 시 dest", "$destinationUid")
+            val chatModel = ChatModel()
+            chatModel.users[uid.toString()] = true
+            chatModel.users[destinationUid.toString()] = true//보낸사람uid
 
+            val comment = ChatModel.Comment(uid, editText.text.toString(), curTime)
             if (chatRoomUid == null) {
                 val chatModel = ChatModel()
                 chatModel.users[uid.toString()] = true
@@ -89,20 +88,36 @@ class MessageActivity:AppCompatActivity() {
                         editText.text = null
                         initRecyclerViewAdapter()  // 새로운 메시지를 추가한 후 RecyclerView를 업데이트합니다.
                     }
+                sendbtn.isEnabled = false
+                fireDatabase.child("chatrooms").push().setValue(chatModel).addOnSuccessListener {
+                    //채팅방 생성
+                    checkChatRoom()
+                    //메세지 보내기
+                    Handler().postDelayed({
+                        println(chatRoomUid)
+                        fireDatabase.child("chatrooms").child(chatRoomUid.toString())
+                            .child("comments").push().setValue(comment)
+                        editText.text = null
+                    }, 1000L)
+                    Log.d("chatUidNull dest", "$destinationUid")
+                }
+            } else {
+                fireDatabase.child("chatrooms").child(chatRoomUid.toString()).child("comments")
+                    .push().setValue(comment)
+                editText.text = null
+                Log.d("chatUidNotNull dest", "$destinationUid")
             }
         }
-
         checkChatRoom()
     }
     private fun checkChatRoom() {
         fireDatabase.child("chatrooms").orderByChild("users/$uid").equalTo(true)
-
-        //fireDatabase.child("chatrooms").orderByChild("articleModelId").equalTo(articleModelId)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                 }
-                override fun onDataChange(snapshot: DataSnapshot) {
+                override fun onDataChange(snapshot: DataSnapshot) {//데이터가 변경되었을때
                     for (item in snapshot.children) {
+                        println(item)
                         val chatModel = item.getValue<ChatModel>()
                         if (chatModel?.users!!.containsKey(uid) && chatModel.users.containsKey(destinationUid) && chatModel.articleModelId == articleModelId) {
                             chatRoomUid = item.key
