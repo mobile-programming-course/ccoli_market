@@ -42,14 +42,6 @@
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:srcCompat="@drawable/baseline_settings_24"
-            tools:layout_editor_absoluteX="342dp"
-            tools:layout_editor_absoluteY="16dp" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
