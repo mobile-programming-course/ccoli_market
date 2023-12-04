@@ -30,11 +30,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var articleDB: DatabaseReference
     private lateinit var userDB: DatabaseReference
 
-    private var statusFilter: String = ""
-    private val defaultValue = ""
+    private var statusFilter: String = "전체"
     private var isDataInitialized = false
 
-    private val spinnerItems = listOf("검색 필터", "전체", "판매중", "판매완료")
+    private val spinnerItems = listOf("전체", "판매중", "판매완료")
 
     private val articleList = mutableListOf<ArticleModel>()
 
@@ -76,7 +75,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, spinnerItems)
         spinner.adapter = spinnerAdapter
 
-        spinner.setSelection(spinnerItems.indexOf("검색 필터"))
+        spinner.setSelection(spinnerItems.indexOf("전체"))
 
         // Spinner 아이템 선택 리스너 설정
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -88,30 +87,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-        spinner.setSelection(spinnerItems.indexOf(defaultValue))
+        spinner.setSelection(spinnerItems.indexOf(statusFilter))
 
         articleDB = Firebase.database.reference.child(DB_ARTICLES)
         userDB = Firebase.database.reference.child(DB_USERS)
         articleAdapter = ArticleAdapter(onItemClicked = { articleModel ->
             if (auth.currentUser != null) {
                 // todo 로그인을 한 상태
-
-                /*                val chatRoom = ChatListItem(
-                                    buyerId = auth.currentUser!!.uid,
-                                    sellerId = articleModel.sellerId,
-                                    itemTitle = articleModel.title,
-                                    key = System.currentTimeMillis()
-                                )
-
-                                userDB.child(auth.currentUser!!.uid)
-                                    .child(CHILD_CHAT)
-                                    .push()
-                                    .setValue(chatRoom)
-
-                                userDB.child(articleModel.sellerId)
-                                    .child(CHILD_CHAT)
-                                    .push()
-                                    .setValue(chatRoom)*/
 
                 val intent = Intent(requireContext(), DetailActivity::class.java).apply {
                     putExtra("articleModelId", articleModel.articleModelId)
@@ -151,10 +133,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun filterData() {
         // 선택된 아이템에 따라 데이터를 필터링하여 새로운 리스트 생성
         val filteredList = when (statusFilter) {
-            "검색 필터" -> articleList.filter { it.status == "" }
             "판매중" -> articleList.filter { it.status == "판매중" }
             "판매완료" -> articleList.filter { it.status == "판매완료" }
-            "전체" -> articleList
+            "전체" -> articleList.toList()
+
             else -> articleList // 기본적으로 전체 반환
         }
 
