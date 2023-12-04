@@ -30,11 +30,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var articleDB: DatabaseReference
     private lateinit var userDB: DatabaseReference
 
-    private var statusFilter: String = ""
+    private var statusFilter: String = "판매중"
     private val defaultValue = ""
     private var isDataInitialized = false
 
-    private val spinnerItems = listOf("검색 필터", "전체", "판매중", "판매완료")
+    private val spinnerItems = listOf("전체", "판매중", "판매완료")
 
     private val articleList = mutableListOf<ArticleModel>()
 
@@ -151,10 +151,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun filterData() {
         // 선택된 아이템에 따라 데이터를 필터링하여 새로운 리스트 생성
         val filteredList = when (statusFilter) {
-            "검색 필터" -> articleList.filter { it.status == "" }
+            //"검색 필터" -> articleList.filter { it.status == "" }
             "판매중" -> articleList.filter { it.status == "판매중" }
             "판매완료" -> articleList.filter { it.status == "판매완료" }
-            "전체" -> articleList
+            "전체" -> articleList.toList()
             else -> articleList // 기본적으로 전체 반환
         }
 
